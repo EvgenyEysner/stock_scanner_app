@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==4.1.3"
+django-extensions = "==3.2.1"
+django-environ = "==0.9.0"
+setuptools = "*"
+lock = "*"
+# DB Packeges
+psycopg2-binary = "==2.9.5"
+# Async
+celery = "==5.2.7"
+# Logging
+django-db-logger = "==0.1.12"                # Database logging
+# Testing
+freezegun = "==1.2.2"
+model-bakery = "==1.9.0"
+markdown = "==3.4.1"
+djangorestframework = "==3.14.0"
+django-cors-headers = "==3.14.0"
+black = "*"
+flake8 = "*"
+pillow = "==9.5.0"
+gunicorn = "==20.1.0"
+python-barcode = {extras = ["images"], version = "*"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
