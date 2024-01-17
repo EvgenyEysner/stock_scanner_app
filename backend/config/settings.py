@@ -6,14 +6,12 @@ import environ
 from corsheaders.defaults import default_methods
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
-# Set the project base directory
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Take environment variables from .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # To make apps are findable without a prefix
-sys.path.append((BASE_DIR, "apps"))
+sys.path.append(str(BASE_DIR / "apps"))
 
 # Todo refactoring settings.py
 
