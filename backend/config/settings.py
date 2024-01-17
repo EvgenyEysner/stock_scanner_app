@@ -6,10 +6,14 @@ import environ
 from corsheaders.defaults import default_methods
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# Set the project base directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # To make apps are findable without a prefix
-sys.path.append(str(BASE_DIR / "apps"))
+sys.path.append((BASE_DIR, "apps"))
 
 # Todo refactoring settings.py
 
@@ -70,7 +74,7 @@ AUTH_USER_MODEL = "account.User"
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
-ALLOWED_HOSTS = ["192.168.178.23"]
+ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
 
 # Application definition
 
@@ -93,7 +97,7 @@ THIRD_PARTY_APPS = (
 )
 
 # add our Apps here
-LOCAL_APPS = ("account", "warehouse")
+LOCAL_APPS = ("apps.account", "apps.warehouse")
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -132,9 +136,13 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env("DATABASE_NAME"),
+        "USER": env("DATABASE_USERNAME"),
+        "PASSWORD": env("DATABASE_PASSWORD"),
+        "HOST": env("DATABASE_HOST"),
+        "PORT": env("DATABASE_PORT"),
     }
 }
 

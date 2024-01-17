@@ -1,13 +1,13 @@
-version: "2.2"
+version: "3.3"
 
 services:
   backend:
     build: ./backend
     depends_on:
       - db
-    container_name: backend
+    container_name: stock-backend
     env_file: ./backend/docker-compose.env
-    command: bash ./scripts/run_local.sh
+    command: bash ./scripts/run_backend.sh
     volumes:
       - ./backend/:/app
     ports:
@@ -18,7 +18,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: frontend
+    container_name: stock-frontend
     env_file: frontend/docker-compose.env
     ports:
       - "3000:3000"
@@ -41,7 +41,7 @@ services:
 
   redis:
     image: redis
-    container_name: invoice_redis
+    container_name: stock_redis
     restart: always
     command: redis-server --requirepass sZA8khTCpbHkeU --loglevel debug
     volumes:
@@ -49,40 +49,40 @@ services:
     ports:
       - "6379:6379"
 
-  celery:
-    depends_on:
-      - redis
-    build: ./backend
-    container_name: invoice_celery_worker
-    env_file: ./backend/docker-compose.env
-    command: celery -A config.celery worker -n default_worker -l info
-    volumes:
-      - ./backend/:/app
-    restart: "no"
-
-  celery_flower:
-    depends_on:
-      - redis
-      - celery
-      - db
-    build: ./backend
-    container_name: invoice_celery_flower
-    env_file: ./backend/docker-compose.env
-    command: celery -A apps.config.celery flower --port=5555
-    ports:
-      - 5555:5555
-    restart: always
-
-  celery_beat:
-    depends_on:
-      - redis
-    build: ./backend
-    container_name: invoice_celery_beat
-    env_file: ./backend/docker-compose.env
-    command: celery -A config.celery beat -l info
-    volumes:
-      - ./backend/:/app
-    restart: "no"
+#  celery:
+#    depends_on:
+#      - redis
+#    build: ./backend
+#    container_name: stock_celery_worker
+#    env_file: ./backend/docker-compose.env
+#    command: celery -A config.celery worker -n default_worker -l info
+#    volumes:
+#      - ./backend/:/app
+#    restart: "no"
+#
+#  celery_flower:
+#    depends_on:
+#      - redis
+#      - celery
+#      - db
+#    build: ./backend
+#    container_name: stock_celery_flower
+#    env_file: ./backend/docker-compose.env
+#    command: celery -A apps.config.celery flower --port=5555
+#    ports:
+#      - 5555:5555
+#    restart: always
+#
+#  celery_beat:
+#    depends_on:
+#      - redis
+#    build: ./backend
+#    container_name: stock_celery_beat
+#    env_file: ./backend/docker-compose.env
+#    command: celery -A config.celery beat -l info
+#    volumes:
+#      - ./backend/:/app
+#    restart: "no"
 
 volumes:
   postgres:
