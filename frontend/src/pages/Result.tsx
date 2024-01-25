@@ -8,7 +8,7 @@ export const Result: React.FC = () => {
 	const button = useRef<HTMLDivElement>(null);
 	const [bottom, setBottom] = useState(0);
 	const [isLoading, setLoading] = useState(true);
-	const [error, setError] = useState('');
+	// const [error, setError] = useState('');
 
 	useEffect(() => {
 		// Здесь должен быть запрос на сервер
@@ -58,25 +58,25 @@ export const Result: React.FC = () => {
 			</>
 		);
 
-	if (error.length !== 0)
-		return (
-			<>
-				<Header isResult={true} />
-				<div
-					style={{
-						width: '100%',
-						display: 'flex',
-						justifyContent: 'center',
-						paddingTop: '30px',
-					}}
-				>
-					<p className='result__error'>{error}</p>
-				</div>
-				<div className='result__button' ref={button}>
-					<button onClick={() => navigate('/')}>Scan again</button>
-				</div>
-			</>
-		);
+	// if (error.length !== 0)
+	// 	return (
+	// 		<>
+	// 			<Header isResult={true} />
+	// 			<div
+	// 				style={{
+	// 					width: '100%',
+	// 					display: 'flex',
+	// 					justifyContent: 'center',
+	// 					paddingTop: '30px',
+	// 				}}
+	// 			>
+	// 				<p className='result__error'>{error}</p>
+	// 			</div>
+	// 			<div className='result__button' ref={button}>
+	// 				<button onClick={() => navigate('/')}>Scan again</button>
+	// 			</div>
+	// 		</>
+	// 	);
 
 	return (
 		<>
