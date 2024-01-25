@@ -9,5 +9,5 @@ COPY . /frontend
 
 RUN yarn build
 
-EXPOSE 3000 6006
-CMD ["yarn", "start:prod"]
+EXPOSE 3000 5173
+CMD ["yarn", "dev"]
