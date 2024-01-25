@@ -12,3 +12,6 @@ class ItemsListView(generics.ListAPIView):
 class ItemDetailView(generics.RetrieveAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    lookup_field = "ean"
+
+
