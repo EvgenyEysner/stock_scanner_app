@@ -13,7 +13,7 @@ export const Scanner: React.FC = () => {
 			<div className='scanner'>
 				<BarcodeScannerComponent
 					onUpdate={(_err, result) => {
-						if (result) navigate(`/result/${result.text}`);
+						if (result) navigate(`/result/${result.getText()}`);
 					}}
 				/>
 			</div>

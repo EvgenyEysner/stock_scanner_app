@@ -1,5 +1,7 @@
 #!/bin/bash
+echo "django shell commands for local execution"
 
-# Start Gunicorn processes
-echo Starting Gunicorn.
-exec gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --timeout 1800 --graceful-timeout 1800
+python ./manage.py migrate  # Apply database migrations
+
+echo "Starting django server on 0.0.0.0:8000"
+exec python ./manage.py runserver 0.0.0.0:8000

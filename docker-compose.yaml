@@ -49,6 +49,24 @@ services:
     ports:
       - "6379:6379"
 
+#  nginx:
+#    build: ./frontend
+#    restart: unless-stopped
+#    ports:
+#      - 80:80
+#      - 443:443
+#    depends_on:
+#      - backend
+#    volumes:
+#      - ./certbot/www:/var/www/certbot/:ro
+#      - ./certbot/conf/:/etc/nginx/ssl/:ro
+#
+#  certbot:
+#    image: certbot/certbot:latest
+#    volumes:
+#      - ./certbot/www/:/var/www/certbot/:rw
+#      - ./certbot/conf/:/etc/letsencrypt/:rw
+
 #  celery:
 #    depends_on:
 #      - redis
