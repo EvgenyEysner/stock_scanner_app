@@ -9,5 +9,5 @@ COPY . /frontend
 
 RUN yarn build
 
-EXPOSE 3000 5173
+EXPOSE 5173
 CMD ["yarn", "dev"]

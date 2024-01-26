@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-			rel="stylesheet"
-		/>
-		<title>Vite + React + TS</title>
-	</head>
-	<body>
-		<div id="root"></div>
-		<script type="module" src="/src/main.tsx"></script>
-	</body>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/png" href="../logo192.png"/>
+    <meta name="theme-color" content="#000000"/>
+    <meta name="description" content="PWA React Application"/>
+    <link rel="apple-touch-icon" href="../logo512.png"/>
+    <link rel="manifest" href="../manifest.json"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+            rel="stylesheet"
+    />
+    <title>Scanner App</title>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx">
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker
+                .register("serviceworker.js")
+                .then((reg) => console.log("Successfully registered: ", reg.scope))
+                .catch((err) => console.log("Error registering: ", err));
+        });
+    }
+</script>
+</body>
 </html>
