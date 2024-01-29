@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 
 interface headerProps {
-	isResult: boolean;
+	link: string;
 }
 
-export const Header = ({ isResult }: headerProps) => {
+export const Header = ({ link }: headerProps) => {
 	return (
 		<header className='header'>
-			{isResult && (
-				<Link to={'/'} style={{ height: 'auto' }}>
+			{link !== '' && (
+				<Link to={link} style={{ height: 'auto' }}>
 					<img src='/src/assets/arrow_back.png' className='header__arrow' />
 				</Link>
 			)}

@@ -263,6 +263,22 @@ h1 {
 	text-align: center;
 }
 
+.main {
+	display: flex;
+	justify-content: center;
+	padding: 30px;
+}
+.main__button {
+	padding: 30px;
+	border-radius: 30px;
+	border: 0;
+	background: #c3c1c1;
+	cursor: pointer;
+}
+.main__img {
+	width: 408px;
+}
+
 @media screen and (max-width: 992px) {
 	.scanner {
 		border-radius: 42px;
@@ -328,5 +344,15 @@ h1 {
 	}
 	.result__button {
 		padding: 20px 0;
+	}
+	.main {
+		padding: 20px;
+	}
+	.main__button {
+		padding: 20px;
+		border-radius: 20px;
+	}
+	.main__img {
+		width: 100%;
 	}
 }

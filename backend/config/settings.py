@@ -23,7 +23,7 @@ env = environ.Env(
     # DJANGO_ALLOWED_HOSTS=(list, ["192.168.178.23"]),
     # DJANGO_DATABASE_URL=(str, "sqlite:///data.db"),
     DJANGO_SERVER_URL=(str, "http://0.0.0.0:8000"),
-    DJANGO_FRONTEND_URL=(str, " https://localhost:5173/"),
+    DJANGO_FRONTEND_URL=(str, "https://192.168.178.25:5173"),
     DJANGO_STATIC_ROOT=(str, "staticfiles"),
     DJANGO_MEDIA_ROOT=(str, "media"),
     # DJANGO_EMAIL_BACKEND=(str, "django.core.mail.backends.smtp.EmailBackend"),
@@ -37,25 +37,28 @@ env = environ.Env(
             "http://localhost:8000",
             "http://localhost:3000",
             "http://127.0.0.1:3000",
-            "https://localhost:5173/",
-            "https://192.168.178.102:5173/",
+            "https://localhost:5173",
+            "http://localhost:5173",
+            "https://192.168.178.25:5173",
+            "http://192.168.178.25:5173",
         ],
     ),
-    DJANGO_COOKIE_DOMAIN=(str, "localhost"),
+
+    # DJANGO_COOKIE_DOMAIN=(str, "localhost"),
     # CSRF
-    DJANGO_CSRF_COOKIE_HTTPONLY=(bool, False),
-    DJANGO_SESSION_COOKIE_SAMESITE=(str, None),
-    DJANGO_SESSION_COOKIE_SECURE=(bool, True),
-    DJANGO_CSRF_TRUSTED_ORIGINS=(
-        list,
-        [
-            "0.0.0.0:8000",
-            "localhost:8000",
-            "localhost:3000",
-            "127.0.0.1:3000",
-            "127.0.0.1:8000",
-        ],
-    ),
+    # DJANGO_CSRF_COOKIE_HTTPONLY=(bool, False),
+    # DJANGO_SESSION_COOKIE_SAMESITE=(str, None),
+    # DJANGO_SESSION_COOKIE_SECURE=(bool, True),
+    # DJANGO_CSRF_TRUSTED_ORIGINS=(
+    #     list,
+    #     [
+    #         "0.0.0.0:8000",
+    #         "localhost:8000",
+    #         "localhost:3000",
+    #         "127.0.0.1:3000",
+    #         "127.0.0.1:8000",
+    #     ],
+    # ),
     # Celery
     DJANGO_CELERY_BROKER_URL=(str, ""),
     DJANGO_CELERY_TASK_ALWAYS_EAGER=(bool, False),
@@ -74,7 +77,7 @@ AUTH_USER_MODEL = "account.User"
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
-ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -104,12 +107,12 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware"
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -192,10 +195,33 @@ FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 
 # CORS
 # CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST")
-# CORS_ALLOWED_ORIGINS = (f"{FRONTEND_URL}",)
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_METHODS = default_methods
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = (
+    "http://0.0.0.0:8000",
+    "http://localhost:8000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://localhost:5173",
+    "http://localhost:5173",
+    "https://192.168.178.25:5173",
+    "http://192.168.178.25:5173",
+    "http://172.18.0.1:5173",
+    "https://172.18.0.1:5173"
+)
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = default_methods
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ]
 
 # CSRF
 # store csrf token in cookie instead of the session to make it possible

@@ -1,22 +1,50 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Loader } from '../UI/Loader';
 import { Header } from '../components/Header';
 
+interface IProduct {
+	id: number;
+	name: string;
+	description: string;
+	image: string;
+	unit: number;
+	stock: number;
+	ean: number | string;
+	position_number: number;
+	barcode: number;
+}
+
 export const Result: React.FC = () => {
 	const navigate = useNavigate();
+	const params = useParams();
+	console.log(params);
+
 	const button = useRef<HTMLDivElement>(null);
 	const [bottom, setBottom] = useState(0);
 	const [isLoading, setLoading] = useState(true);
-	// const [error, setError] = useState('');
+	const [error, setError] = useState('');
+	const [data, setData] = useState<IProduct | null>(null);
 
 	useEffect(() => {
-		// Здесь должен быть запрос на сервер
+		const fetchData = async () => {
+			setLoading(true);
+			try {
+				const res = await fetch(
+					`http://localhost:8000/api/v1/item/${params.name}`
+				);
+				const result: IProduct = await res.json();
+				setData(result);
+			} catch (e) {
+				setError('Товар не найден');
+				console.error('Error: ', e);
+			} finally {
+				setLoading(false);
+			}
+		};
 
-		// setTimeout(() => {
-		setLoading(false);
-		// }, 2000);
-	}, []);
+		fetchData();
+	}, [params.name]);
 
 	useEffect(() => {
 		if (button.current) {
@@ -24,24 +52,10 @@ export const Result: React.FC = () => {
 		}
 	}, [button]);
 
-	const data = {
-		id: 2,
-		name: 'Test',
-		description: 'Description this item',
-		image:
-			'https://upload.wikimedia.org/wikipedia/commons/5/5a/Books_HD_%288314929977%29.jpg',
-		unit: 1,
-		stock: 10,
-		ean: '0123456789789',
-		position_number: 120,
-		barcode:
-			'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXW1Gu4d-HdFxRRkpbor-Ygchfktf8nfzgE5IOfosAyg&s',
-	};
-
 	if (isLoading)
 		return (
 			<>
-				<Header isResult={true} />
+				<Header link={'/scan'} />
 				<div
 					style={{
 						width: '100%',
@@ -58,29 +72,29 @@ export const Result: React.FC = () => {
 			</>
 		);
 
-	// if (error.length !== 0)
-	// 	return (
-	// 		<>
-	// 			<Header isResult={true} />
-	// 			<div
-	// 				style={{
-	// 					width: '100%',
-	// 					display: 'flex',
-	// 					justifyContent: 'center',
-	// 					paddingTop: '30px',
-	// 				}}
-	// 			>
-	// 				<p className='result__error'>{error}</p>
-	// 			</div>
-	// 			<div className='result__button' ref={button}>
-	// 				<button onClick={() => navigate('/')}>Scan again</button>
-	// 			</div>
-	// 		</>
-	// 	);
+	if (error.length !== 0 || !data)
+		return (
+			<>
+				<Header link={'/scan'} />
+				<div
+					style={{
+						width: '100%',
+						display: 'flex',
+						justifyContent: 'center',
+						paddingTop: '30px',
+					}}
+				>
+					<p className='result__error'>{error}</p>
+				</div>
+				<div className='result__button' ref={button}>
+					<button onClick={() => navigate('/scan')}>Scan again</button>
+				</div>
+			</>
+		);
 
 	return (
 		<>
-			<Header isResult={true} />
+			<Header link={'/scan'} />
 			<div className='result' style={{ paddingBottom: bottom + 'px' }}>
 				<img src={data.image} alt={data.name} className='result__image' />
 				<p className='result__row'>
@@ -90,36 +104,15 @@ export const Result: React.FC = () => {
 					<span>Description:</span> {data.description}
 				</p>
 				<p className='result__row'>
-					<span>Description:</span> {data.description}
+					<span>Quantity:</span> {data.stock + ' ' + data.unit}
 				</p>
 				<p className='result__row'>
-					<span>Description:</span> {data.description}
+					<span>Position number:</span> {data.position_number}
 				</p>
 				<p className='result__row'>
-					<span>Description:</span> {data.description}
+					<span>Ean:</span> {data.ean}
 				</p>
-				<p className='result__row'>
-					<span>Description:</span> {data.description}
-				</p>
-				<p className='result__row'>
-					<span>Description:</span> {data.description}
-				</p>
-				<p className='result__row'>
-					<span>Description:</span> {data.description}
-				</p>
-				<p className='result__row'>
-					<span>Description:</span> {data.description}
-				</p>
-				<p className='result__row'>
-					<span>Description:</span> {data.description}
-				</p>
-				<p className='result__row'>
-					<span>Description:</span> {data.description}
-				</p>
-				<p className='result__row'>
-					<span>Description:</span> {data.description}
-				</p>
-				<img src={data.barcode} alt={data.name} className='result__image' />
+				{/* <img src={data.barcode} alt={data.name} className='result__image' /> */}
 			</div>
 			<div className='result__button' ref={button}>
 				<button onClick={() => navigate('/')}>Scan again</button>
