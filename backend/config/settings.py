@@ -9,7 +9,7 @@ from corsheaders.defaults import default_methods
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Take environment variables from .env file
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 # To make apps are findable without a prefix
 sys.path.append(str(BASE_DIR / "apps"))
 
@@ -22,7 +22,7 @@ env = environ.Env(
     DJANGO_SECRET_KEY=(str, ""),
     # DJANGO_ALLOWED_HOSTS=(list, ["192.168.178.23"]),
     # DJANGO_DATABASE_URL=(str, "sqlite:///data.db"),
-    DJANGO_SERVER_URL=(str, "http://0.0.0.0:8000"),
+    DJANGO_SERVER_URL=(str, "http://192.168.178.25:8000"),
     DJANGO_FRONTEND_URL=(str, "https://192.168.178.25:5173"),
     DJANGO_STATIC_ROOT=(str, "staticfiles"),
     DJANGO_MEDIA_ROOT=(str, "media"),
@@ -43,7 +43,6 @@ env = environ.Env(
             "http://192.168.178.25:5173",
         ],
     ),
-
     # DJANGO_COOKIE_DOMAIN=(str, "localhost"),
     # CSRF
     # DJANGO_CSRF_COOKIE_HTTPONLY=(bool, False),
@@ -71,7 +70,7 @@ DEBUG = env.bool("DJANGO_DEBUG")
 
 AUTH_USER_MODEL = "account.User"
 
-# BASE_URL = env("DJANGO_SERVER_URL")
+BASE_URL = env("DJANGO_SERVER_URL")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY")
@@ -80,7 +79,6 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
-
 DJANGO_APPS = (
     "django.contrib.admin",
     "django.contrib.auth",
@@ -97,6 +95,7 @@ THIRD_PARTY_APPS = (
     "django_extensions",
     "corsheaders",
     "rest_framework",
+    "sslserver",
 )
 
 # add our Apps here
@@ -138,14 +137,21 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": env("DATABASE_NAME"),
+#         "USER": env("DATABASE_USERNAME"),
+#         "PASSWORD": env("DATABASE_PASSWORD"),
+#         "HOST": env("DATABASE_HOST"),
+#         "PORT": env("DATABASE_PORT"),
+#     }
+# }
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("DATABASE_NAME"),
-        "USER": env("DATABASE_USERNAME"),
-        "PASSWORD": env("DATABASE_PASSWORD"),
-        "HOST": env("DATABASE_HOST"),
-        "PORT": env("DATABASE_PORT"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 
@@ -194,7 +200,7 @@ STATICFILES_DIRS = ("static",)
 FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 
 # CORS
-# CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST")
+CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST")
 CORS_ALLOWED_ORIGINS = (
     "http://0.0.0.0:8000",
     "http://localhost:8000",
@@ -204,24 +210,9 @@ CORS_ALLOWED_ORIGINS = (
     "http://localhost:5173",
     "https://192.168.178.25:5173",
     "http://192.168.178.25:5173",
-    "http://172.18.0.1:5173",
-    "https://172.18.0.1:5173"
 )
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = default_methods
-CORS_ALLOW_ALL_ORIGINS = True
-
-# CORS_ALLOW_HEADERS = [
-#     'accept',
-#     'accept-encoding',
-#     'authorization',
-#     'content-type',
-#     'dnt',
-#     'origin',
-#     'user-agent',
-#     'x-csrftoken',
-#     'x-requested-with',
-# ]
 
 # CSRF
 # store csrf token in cookie instead of the session to make it possible
@@ -262,7 +253,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-                      "%(process)d %(thread)d %(message)s"
+            "%(process)d %(thread)d %(message)s"
         },
     },
     "handlers": {

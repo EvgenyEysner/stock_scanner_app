@@ -13,6 +13,7 @@ services:
     ports:
       - "8000:8000"
     restart: "no"
+    network_mode: host
 
   frontend:
     build:
@@ -25,6 +26,7 @@ services:
     volumes:
       - ./frontend/src:/frontend/src
       - ./frontend/public:/frontend/public
+    network_mode: host
 
   db:
     image: library/postgres:13.13-bullseye
@@ -38,6 +40,7 @@ services:
     ports:
       - "5432:5432"
     restart: "no"
+    network_mode: host
 
   redis:
     image: redis
@@ -101,6 +104,10 @@ services:
 #    volumes:
 #      - ./backend/:/app
 #    restart: "no"
+
+networks:
+  backend:
+    driver: host
 
 volumes:
   postgres:
