@@ -25,8 +25,8 @@ black = "*"
 flake8 = "*"
 pillow = "==9.5.0"
 gunicorn = "==20.1.0"
-python-barcode = {extras = ["images"], version = "*"}
-django-sslserver = "*"
+python-barcode = { extras = ["images"], version = "*" }
+django-sslserver = "*"  # ssl for django server https://github.com/teddziuba/django-sslserver/
 
 [dev-packages]
 
