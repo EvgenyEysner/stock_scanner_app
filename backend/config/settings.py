@@ -5,16 +5,22 @@ from pathlib import Path
 import environ
 from corsheaders.defaults import default_methods
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    DJANGO_STATIC_ROOT=(str, "staticfiles"),
+    DJANGO_MEDIA_ROOT=(str, "media"),
+)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Take environment variables from .env file
-env = environ.Env.read_env(os.path.join(BASE_DIR, "./.env"))
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 # To make apps are findable without a prefix
 sys.path.append(str(BASE_DIR / "apps"))
 
-DEBUG = env("DJANGO_DEBUG")
-DEBUG_TOOLBAR = env.bool("DJANGO_USE_DEBUG_TOOLBAR"),
+DEBUG = env.bool("DJANGO_DEBUG")
+DEBUG_TOOLBAR = (env.bool("DJANGO_USE_DEBUG_TOOLBAR"),)
 
 AUTH_USER_MODEL = "account.User"
 
@@ -131,11 +137,11 @@ USE_I18N = True
 
 USE_TZ = True
 
-MEDIA_ROOT = env.str("DJANGO_MEDIA_ROOT")
+MEDIA_ROOT = env("DJANGO_MEDIA_ROOT")
 MEDIA_URL = "/media/"
 
 STATIC_URL = "/static/"
-STATIC_ROOT = env.str("DJANGO_STATIC_ROOT")
+STATIC_ROOT = env("DJANGO_STATIC_ROOT")
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -200,7 +206,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-                      "%(process)d %(thread)d %(message)s"
+            "%(process)d %(thread)d %(message)s"
         },
     },
     "handlers": {
@@ -226,8 +232,8 @@ LOGGING = {
 
 # Celery settings
 CELERY_TIMEZONE = "Europe/Berlin"
-CELERY_BROKER_URL = env("DJANGO_CELERY_BROKER_URL")
-CELERY_TASK_ALWAYS_EAGER = env("DJANGO_CELERY_TASK_ALWAYS_EAGER")
+# CELERY_BROKER_URL = env("DJANGO_CELERY_BROKER_URL")
+# CELERY_TASK_ALWAYS_EAGER = env("DJANGO_CELERY_TASK_ALWAYS_EAGER")
 
 CELERY_RESULT_BACKEND = "rpc://"
 CELERY_TASK_CREATE_MISSING_QUEUES = True
