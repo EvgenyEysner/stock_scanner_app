@@ -65,3 +65,4 @@ backend/staticfiles
 .sass-cache/
 /startbootstrap-clean-blog-gh-pages/
 /backend/docker-compose.env
+/backend/.env

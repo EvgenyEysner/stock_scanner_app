@@ -25,7 +25,7 @@ COPY . /src/
 WORKDIR /src
 
 # Run collectstatic for whitenoise
-RUN python ./manage.py collectstatic --noinput
+#RUN python ./manage.py collectstatic --noinput
 
 # Create empty env-file to avoid warnings
 RUN touch ./.env
