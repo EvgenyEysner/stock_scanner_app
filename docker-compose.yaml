@@ -6,7 +6,7 @@ services:
     depends_on:
       - db
     container_name: stock-backend
-    env_file: ./backend/docker-compose.env
+    env_file: ./backend/.env
     command: bash ./scripts/run_backend.sh
     volumes:
       - ./backend/:/app
@@ -49,23 +49,25 @@ services:
     ports:
       - "6379:6379"
 
-#  nginx:
-#    build: ./frontend
-#    restart: unless-stopped
-#    ports:
-#      - 80:80
-#      - 443:443
-#    depends_on:
-#      - backend
-#    volumes:
-#      - ./certbot/www:/var/www/certbot/:ro
-#      - ./certbot/conf/:/etc/nginx/ssl/:ro
-#
-#  certbot:
-#    image: certbot/certbot:latest
-#    volumes:
-#      - ./certbot/www/:/var/www/certbot/:rw
-#      - ./certbot/conf/:/etc/letsencrypt/:rw
+  nginx:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - backend
+    volumes:
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+      - ./static/:/static
+      - ./media/:/media
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
 #  celery:
 #    depends_on:
