@@ -31,7 +31,7 @@ export const Result: React.FC = () => {
       setLoading(true)
       try {
         const res = await fetch(
-          `https://192.168.178.25:8000/api/v1/item/${params.name}`,
+          `http://217.160.10.28/api/v1/item/${params.name}`,
         )
 
         const result: IProduct = await res.json()
