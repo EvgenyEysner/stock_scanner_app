@@ -31,7 +31,7 @@ export const Result: React.FC = () => {
       setLoading(true)
       try {
         const res = await fetch(
-          `http://demo.softeis.net/api/v1/item/${params.name}`,
+          `https://demo.softeis.net/api/v1/item/${params.name}`,
         )
 
         const result: IProduct = await res.json()
