@@ -30,7 +30,7 @@ BASE_URL = env("DJANGO_SERVER_URL")
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
-ALLOWED_HOSTS = ["demo.softeis.net"]
+ALLOWED_HOSTS = ["demo.softeis.net", "enchanting-baklava-c0f2a4.netlify.app"]
 
 # Application definition
 DJANGO_APPS = (
@@ -155,18 +155,32 @@ FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 
 # CORS
 CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST")
-# CORS_ALLOWED_ORIGINS = (
-#     "http://0.0.0.0:8000",
-#     "http://localhost:8000",
-#     "http://localhost:3000",
-#     "http://127.0.0.1:3000",
-#     "https://localhost:5173",
-#     "http://localhost:5173",
-#     "https://192.168.178.25:5173",
-#     "http://192.168.178.25:5173",
-# )
+CORS_ALLOWED_ORIGINS = (
+    "https://enchanting-baklava-c0f2a4.netlify.app",
+    "https://192.168.178.25:5173",
+    "http://192.168.178.25:5173",
+)
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = default_methods
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_EXPOSE_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+]
 
 # CSRF
 # store csrf token in cookie instead of the session to make it possible
