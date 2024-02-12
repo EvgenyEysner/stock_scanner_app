@@ -113,7 +113,6 @@ export const Result: React.FC = () => {
         <p className="result__row">
           <span>Ean:</span> {data.ean}
         </p>
-        {/* <img src={data.barcode} alt={data.name} className='result__image' /> */}
       </div>
       <div className="result__button" ref={button}>
         <button onClick={() => navigate('/')}>Scan again</button>

@@ -17,6 +17,7 @@ class Item(models.Model):
     description = models.TextField(
         _("Beschreibung"), max_length=256, null=True, blank=True
     )
+    # Todo Herstellernummer,Lager
     image = models.ImageField(
         verbose_name=_("Artikelbild"), upload_to="item/image", null=True, blank=True
     )
