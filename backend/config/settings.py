@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["demo.softeis.net", "enchanting-baklava-c0f2a4.netlify.app"]
 
 # Application definition
 DJANGO_APPS = (
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
