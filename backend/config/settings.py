@@ -54,9 +54,11 @@ THIRD_PARTY_APPS = (
 )
 
 # add our Apps here
-LOCAL_APPS = ("apps.account", "apps.warehouse")
+LOCAL_APPS = ("apps.account", "apps.warehouse", "apps.cart")
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+CART_SESSION_ID = "cart"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
