@@ -6,6 +6,36 @@ from django.core.files import File
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.account.models import User
+
+
+class Stock(models.Model):
+    name = models.CharField(_("Lagername"), max_length=64)
+    location = models.TextField(_("Standort"), max_length=500)
+    manager = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="stocks"
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Lager"
+        verbose_name_plural = "Lager"
+        ordering = ("name",)
+
+
+class Category(models.Model):
+    name = models.CharField(_("Kategorie"), max_length=128)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Kategorie")
+        verbose_name_plural = _("Kategorien")
+        ordering = ("name",)
+
 
 class Item(models.Model):
     class UnitChoices(models.IntegerChoices):
@@ -17,9 +47,18 @@ class Item(models.Model):
     description = models.TextField(
         _("Beschreibung"), max_length=256, null=True, blank=True
     )
-    # Todo Herstellernummer,Lager
     image = models.ImageField(
-        verbose_name=_("Artikelbild"), upload_to="item/image", null=True, blank=True
+        verbose_name=_("Artikelbild"), upload_to="image", null=True, blank=True
+    )
+    manufacturer_number = models.CharField(
+        _("Hersteller Artikelnummer"), max_length=64, blank=True
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name="products",
+        blank=True,
+        verbose_name=_("Kategorie"),
     )
     unit = models.PositiveSmallIntegerField(
         choices=UnitChoices.choices,
@@ -27,7 +66,12 @@ class Item(models.Model):
         verbose_name=_("Maßeinheit"),
     )
 
-    stock = models.PositiveSmallIntegerField(verbose_name=_("Lagerbestand"), default=0)
+    on_stock = models.PositiveSmallIntegerField(
+        verbose_name=_("Lagerbestand"), default=0
+    )
+    stock = models.ForeignKey(
+        Stock, on_delete=models.CASCADE, related_name="items", verbose_name=_("Lager")
+    )
     ean = models.CharField(verbose_name=_("EAN"), max_length=13)
     position_number = models.IntegerField(
         verbose_name=_("Position bei Hauptlager"), default=0
@@ -35,7 +79,7 @@ class Item(models.Model):
     barcode = models.ImageField(
         verbose_name=_("Strichcode"),
         default="item/barcode/barcode.svg",
-        upload_to="item/barcode",
+        upload_to="barcode",
         null=True,
         blank=True,
     )

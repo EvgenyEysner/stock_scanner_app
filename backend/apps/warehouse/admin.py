@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Item
+from .models import Item, Stock, Category
 
 
 @admin.register(Item)
@@ -23,6 +23,21 @@ class ItemAdmin(admin.ModelAdmin):
         "stock",
         "unit",
         "position_number",
+        "manufacturer_number",
         "ean",
         "barcode_tag",
     )
+
+
+@admin.register(Stock)
+class StockAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "location",
+        "manager",
+    )
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("name",)
