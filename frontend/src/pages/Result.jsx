@@ -1,21 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 import { Loader } from '../UI/Loader'
 import { Header } from '../components/Header'
 
-interface IProduct {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  unit: number;
-  stock: number;
-  ean: string;
-  position_number: number;
-  barcode: number;
-}
 
-export const Result: React.FC = () => {
+export const Result = () => {
   const navigate = useNavigate()
   const params = useParams()
   console.log(params)
@@ -24,7 +13,7 @@ export const Result: React.FC = () => {
   const [bottom, setBottom] = useState(0)
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [data, setData] = useState<IProduct | null>(null)
+  const [data, setData] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +23,7 @@ export const Result: React.FC = () => {
           `https://demo.softeis.net/api/v1/item/${params.name}`,
         )
 
-        const result: IProduct = await res.json()
+        const result = await res.json()
         setData(result)
       } catch (e) {
         setError('Товар не найден')

@@ -1,10 +1,6 @@
 import { Link } from 'react-router-dom'
 
-interface headerProps {
-  link: string;
-}
-
-export const Header = ({ link }: headerProps) => {
+export const Header = ( link ) => {
   return (
     <header className="header">
       {link !== '' && (

@@ -1,12 +1,11 @@
-import { useNavigate } from 'react-router'
-import { Header } from '../components/Header'
+import {useNavigate} from 'react-router'
+import {NavBar} from "../components/Header/NavBar";
 
 export const Main = () => {
   const navigate = useNavigate()
 
   return (
     <>
-      <Header link={''} />
       <div className="main">
         <button className="main__button" onClick={() => navigate('/scan')}>
           <img

@@ -1,8 +1,12 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router'
 import './App.css'
 import { Main } from './pages/Main'
 import { Result } from './pages/Result'
 import { Scanner } from './pages/Scanner'
+import {NavBar} from "./components/Header/NavBar";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Page} from "./pages/Page";
+import {Footer} from "./components/Footer/Footer";
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -15,13 +19,11 @@ if ('serviceWorker' in navigator) {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Main />} />
-      <Route path="/scan" element={<Scanner />} />
-      <Route path="/result/:name" element={<Result />} />
-
-      <Route path="*" element={<Navigate to="/" />} />
-    </Routes>
+    <>
+      <NavBar/>
+      <Page/>
+      <Footer/>
+    </>
   )
 }
 
