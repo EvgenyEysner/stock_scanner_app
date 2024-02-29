@@ -1,5 +1,4 @@
 import {useNavigate} from 'react-router'
-import {NavBar} from "../components/Header/NavBar";
 
 export const Main = () => {
   const navigate = useNavigate()

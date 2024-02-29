@@ -1,15 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
-import { Loader } from '../UI/Loader'
-import { Header } from '../components/Header'
+import React, {useEffect, useRef, useState} from 'react'
+import {useNavigate, useParams} from 'react-router'
+import {Loader} from '../UI/Loader'
 
 
 export const Result = () => {
   const navigate = useNavigate()
   const params = useParams()
-  console.log(params)
 
-  const button = useRef<HTMLDivElement>(null)
+  const button = useRef(null)
   const [bottom, setBottom] = useState(0)
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -45,7 +43,6 @@ export const Result = () => {
   if (isLoading)
     return (
       <>
-        <Header link={'/scan'} />
         <div
           style={{
             width: '100%',
@@ -54,7 +51,7 @@ export const Result = () => {
             paddingTop: '30px',
           }}
         >
-          <Loader />
+          <Loader/>
         </div>
         <div className="result__button" ref={button}>
           <button onClick={() => navigate('/')}>Scan again</button>
@@ -65,7 +62,6 @@ export const Result = () => {
   if (error.length !== 0 || !data)
     return (
       <>
-        <Header link={'/scan'} />
         <div
           style={{
             width: '100%',
@@ -84,9 +80,8 @@ export const Result = () => {
 
   return (
     <>
-      <Header link={'/scan'} />
-      <div className="result" style={{ paddingBottom: bottom + 'px' }}>
-        <img src={data.image} alt={data.name} className="result__image" />
+      <div className="result" style={{paddingBottom: bottom + 'px'}}>
+        <img src={data.image} alt={data.name} className="result__image"/>
         <p className="result__row">
           <span>Name:</span> {data.name}
         </p>
