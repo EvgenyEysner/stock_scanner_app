@@ -48,7 +48,11 @@ class Item(models.Model):
         _("Beschreibung"), max_length=256, null=True, blank=True
     )
     image = models.ImageField(
-        verbose_name=_("Artikelbild"), upload_to="image", null=True, blank=True
+        verbose_name=_("Artikelbild"),
+        upload_to="image",
+        null=True,
+        blank=True,
+        default="default-product-image.jpg",
     )
     manufacturer_number = models.CharField(
         _("Hersteller Artikelnummer"), max_length=64, blank=True
@@ -70,7 +74,10 @@ class Item(models.Model):
         verbose_name=_("Lagerbestand"), default=0
     )
     stock = models.ForeignKey(
-        Stock, on_delete=models.CASCADE, related_name="items", verbose_name=_("Lager")
+        Stock,
+        on_delete=models.CASCADE,
+        related_name="items",
+        verbose_name=_("Lager"),
     )
     ean = models.CharField(verbose_name=_("EAN"), max_length=13)
     position_number = models.IntegerField(
