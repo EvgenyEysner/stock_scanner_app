@@ -1,8 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.db import models
 from django.db.models.signals import post_save
-from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from .managers import UserManager
 from .permissions import set_group_permissions
@@ -100,6 +100,9 @@ class Employee(models.Model):
         ordering = ["last_name"]
         verbose_name = _("Mitarbeiter")
         verbose_name_plural = _("Mitarbeiter")
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 post_save.connect(set_group_permissions, sender=Employee)
