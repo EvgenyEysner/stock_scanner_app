@@ -102,15 +102,21 @@ class Item(models.Model):
         ordering = ("name",)
 
     def save(self, *args, **kwargs):
-        ean = EAN13(str(self.ean), writer=ImageWriter())
-        buffer = BytesIO()
-        ean.write(buffer)
-        self.barcode.save(f"barcode_{self.ean}.png", File(buffer), save=False)
+        if not self.barcode:
+            ean = EAN13(str(self.ean), writer=ImageWriter())
+            buffer = BytesIO()
+            ean.write(buffer)
+            self.barcode.save(f"barcode_{self.ean}.png", File(buffer), save=False)
         return super().save(*args, **kwargs)
 
 
 class Order(models.Model):
-    item = models.ManyToManyField(Item, verbose_name=_("Artikel"))
+    employee = models.OneToOneField(
+        Employee, on_delete=models.PROTECT, verbose_name=Employee._meta.verbose_name
+    )
+
+    note = models.TextField(max_length=256, verbose_name=_("Notiz"), blank=True)
+
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_("erstellt am"),
@@ -120,20 +126,39 @@ class Order(models.Model):
         verbose_name=_("geändert am"), editable=False, auto_now=True
     )
 
-    quantity = models.PositiveSmallIntegerField(verbose_name=_("menge"), default=0)
-
-    employee = models.OneToOneField(
-        Employee, on_delete=models.PROTECT, verbose_name=Employee._meta.verbose_name
-    )
-
-    note = models.TextField(max_length=256, verbose_name=_("Notiz"), blank=True)
-
     class Meta:
         verbose_name = "Auftrag"
         verbose_name_plural = "Aufträge"
         ordering = ("created_at",)
 
+    def __str__(self):
+        return f"{self.employee} {self.created_at}"
 
-# class OrderItem(models.Model):
-#     item = models.ForeignKey(Item, verbose_name=_("Artikel"), on_delete=models.CASCADE)
-#     order = models.ForeignKey(Order, verbose_name=_("Auftrag"), on_delete=models.CASCADE)
+    def get_total(self):
+        return sum(item.quantity for item in self.items.all())
+
+    def save(self, *args, **kwargs):
+        for item in self.items.all():
+            product = Item.objects.get(id=item.item_id)
+            product.on_stock -= item.quantity
+            product.save()
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        Order, verbose_name=_("Auftrag"), on_delete=models.CASCADE, related_name="items"
+    )
+    item = models.ForeignKey(
+        Item,
+        verbose_name=_("Artikel"),
+        on_delete=models.CASCADE,
+        related_name="order_items",
+    )
+    quantity = models.PositiveSmallIntegerField(verbose_name=_("menge"), default=0)
+
+    class Meta:
+        verbose_name = "Artikel"
+        verbose_name_plural = "Artikeln"
+
+    def __str__(self):
+        return str(self.id)

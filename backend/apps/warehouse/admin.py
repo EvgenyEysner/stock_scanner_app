@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Item, Stock, Category, Order
+from .models import Item, Stock, Category, Order, OrderItem
 
 
 @admin.register(Item)
@@ -20,12 +20,18 @@ class ItemAdmin(admin.ModelAdmin):
         "image_tag",
         "name",
         "description",
+        "on_stock",
         "stock",
         "unit",
         "position_number",
         "manufacturer_number",
         "ean",
         "barcode_tag",
+    )
+
+    list_filter = (
+        "id",
+        "name",
     )
 
 
@@ -43,8 +49,16 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    raw_id_fields = ["item"]
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    filter_horizontal = ("item",)
-    list_filter = ("item", "quantity")
-    list_display = ("created_at", "modified_at", "employee", "quantity", "note")
+    list_display = ("employee", "created_at", "modified_at", "note", "total")
+    inlines = [OrderItemInline]
+
+    @admin.display(description="Erfasste Menge")
+    def total(self, obj):
+        return obj.get_total()
