@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Item, Stock, Category
+from .models import Item, Stock, Category, Order
 
 
 @admin.register(Item)
@@ -41,3 +41,10 @@ class StockAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    filter_horizontal = ("item",)
+    list_filter = ("item", "quantity")
+    list_display = ("created_at", "modified_at", "employee", "quantity", "note")

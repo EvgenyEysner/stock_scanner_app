@@ -8,6 +8,8 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.account.models import User
 
+from apps.account.models import Employee
+
 
 class Stock(models.Model):
     name = models.CharField(_("Lagername"), max_length=64)
@@ -105,3 +107,33 @@ class Item(models.Model):
         ean.write(buffer)
         self.barcode.save(f"barcode_{self.ean}.png", File(buffer), save=False)
         return super().save(*args, **kwargs)
+
+
+class Order(models.Model):
+    item = models.ManyToManyField(Item, verbose_name=_("Artikel"))
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("erstellt am"),
+        editable=False,
+    )
+    modified_at = models.DateTimeField(
+        verbose_name=_("geändert am"), editable=False, auto_now=True
+    )
+
+    quantity = models.PositiveSmallIntegerField(verbose_name=_("menge"), default=0)
+
+    employee = models.OneToOneField(
+        Employee, on_delete=models.PROTECT, verbose_name=Employee._meta.verbose_name
+    )
+
+    note = models.TextField(max_length=256, verbose_name=_("Notiz"), blank=True)
+
+    class Meta:
+        verbose_name = "Auftrag"
+        verbose_name_plural = "Aufträge"
+        ordering = ("created_at",)
+
+
+# class OrderItem(models.Model):
+#     item = models.ForeignKey(Item, verbose_name=_("Artikel"), on_delete=models.CASCADE)
+#     order = models.ForeignKey(Order, verbose_name=_("Auftrag"), on_delete=models.CASCADE)
