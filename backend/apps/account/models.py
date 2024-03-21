@@ -104,5 +104,8 @@ class Employee(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 post_save.connect(set_group_permissions, sender=Employee)

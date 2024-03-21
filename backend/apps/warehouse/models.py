@@ -137,11 +137,11 @@ class Order(models.Model):
     def get_total(self):
         return sum(item.quantity for item in self.items.all())
 
-    def save(self, *args, **kwargs):
-        for item in self.items.all():
-            product = Item.objects.get(id=item.item_id)
-            product.on_stock -= item.quantity
-            product.save()
+    # def save(self, *args, **kwargs):
+    #     for item in self.items.all():
+    #         product = Item.objects.get(id=item.item_id)
+    #         product.on_stock -= item.quantity
+    #         product.save()
 
 
 class OrderItem(models.Model):

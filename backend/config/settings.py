@@ -162,6 +162,7 @@ CORS_ALLOWED_ORIGINS = (
     "https://enchanting-baklava-c0f2a4.netlify.app",
     "https://192.168.178.25:5173",
     "http://192.168.178.25:5173",
+    "http://localhost:3000",
 )
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = default_methods
