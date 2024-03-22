@@ -1,8 +1,9 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import ItemSerializer
+from .serializers import ItemSerializer, MyTokenObtainPairSerializer
 from ..cart.cart import Cart
 from ..warehouse.models import Item
 
@@ -54,3 +55,8 @@ class CartAPI(APIView):
             )
 
         return Response({"message": "cart updated"}, status=status.HTTP_202_ACCEPTED)
+
+
+# ---------------- account views ------------ #
+class LoginView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
