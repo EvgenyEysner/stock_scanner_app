@@ -31,7 +31,7 @@ BASE_URL = env("DJANGO_SERVER_URL")
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
-ALLOWED_HOSTS = ["demo.softeis.net", "enchanting-baklava-c0f2a4.netlify.app", "0.0.0.0"]
+ALLOWED_HOSTS = ["demo.softeis.net", "enchanting-baklava-c0f2a4.netlify.app", "127.0.0.1", "localhost"]
 
 # Application definition
 DJANGO_APPS = (
@@ -52,7 +52,7 @@ THIRD_PARTY_APPS = (
     "corsheaders",
     "rest_framework",
     "rest_framework_simplejwt.token_blacklist",
-    "sslserver",
+    # "sslserver",
 )
 
 # add our Apps here
