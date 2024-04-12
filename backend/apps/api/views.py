@@ -26,10 +26,6 @@ class ItemDetailView(generics.RetrieveAPIView):
 
 
 # ---------------- order/orderItems views ------------ #
-# class OrderListView(generics.ListAPIView):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-# permission_classes = (AllowAny, )
 
 
 class OrderApiView(APIView):
