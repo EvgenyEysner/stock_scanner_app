@@ -29,6 +29,8 @@ python-barcode = { extras = ["images"], version = "*" }
 django-sslserver = "*"  # ssl for django server https://github.com/teddziuba/django-sslserver/
 django-jazzmin = "==2.6.0"
 djangorestframework-simplejwt = "==5.3.1"
+django-rest-auth = "==0.9.5"
+dj-rest-auth = "==5.1.0"
 
 [dev-packages]
 
