@@ -59,11 +59,10 @@ THIRD_PARTY_APPS = (
     "rest_framework.authtoken",
     "dj_rest_auth",
     "rest_framework_simplejwt.token_blacklist",
-    # "sslserver",
 )
 
 # add our Apps here
-LOCAL_APPS = ("apps.account", "apps.warehouse", "apps.cart")
+LOCAL_APPS = ("apps.account", "apps.warehouse")
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -270,7 +269,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 

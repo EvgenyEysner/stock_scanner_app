@@ -19,7 +19,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
 # This serializes all objects of Order Item model with all fields
 class OrderItemSerializer(serializers.ModelSerializer):
-    item = stock = serializers.SlugRelatedField(slug_field="name", read_only=True)
+    item = serializers.SlugRelatedField(slug_field="name", read_only=True)
 
     class Meta:
         model = OrderItem
@@ -39,7 +39,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = ["id", "email", "is_active", "is_staff", "date_joined"]

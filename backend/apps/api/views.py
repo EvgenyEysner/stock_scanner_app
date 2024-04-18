@@ -1,3 +1,4 @@
+from apps.cart.cart import Cart
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -14,7 +15,6 @@ from apps.api.serializers import (
     OrderItemSerializer,
     UserSerializer,
 )
-from apps.cart.cart import Cart
 from apps.warehouse.models import Item, Order, OrderItem
 
 
@@ -38,48 +38,21 @@ class ItemDetailView(generics.RetrieveAPIView):
 # ---------------- order/orderItems views ------------ #
 
 
-class OrderApiView(APIView):
+class OrderListView(generics.ListAPIView):
     queryset = Order.objects.all()
+    serializer_class = OrderSerializer
     permission_classes = (AllowAny,)
 
-    def get(self, request, format=None):
-        orders = Order.objects.all()
-        serializer = OrderSerializer(orders, many=True)
-        return Response(serializer.data)
 
-    def post(self, request, format=None):
-        serializer = OrderSerializer(data=request.data)
-        print("DATA", serializer)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class OrderItemApiView(APIView):
+class OrderItemListView(generics.ListAPIView):
     queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
     permission_classes = (AllowAny,)
-
-    def get(self, request, format=None):
-        orders = OrderItem.objects.all()
-        serializer = OrderItemSerializer(orders, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, format=None):
-        serializer = OrderItemSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CartAPI(APIView):
-    """
-    Single API to handle cart operations
-    """
-
+    # permission_classes = (IsAuthenticated,)
     permission_classes = (AllowAny,)
-    queryset = Order.objects.all()
 
     def get(self, request, format=None):
         cart = Cart(request)
@@ -89,30 +62,46 @@ class CartAPI(APIView):
             status=status.HTTP_200_OK,
         )
 
-    def post(self, request, **kwargs):
-        cart = Cart(request)
+    def post(self, request, *args, **kwargs):
+        order_items = request.data
+        # Todo GET User
+        user = request.user
 
-        if "remove" in request.data:
-            product = request.data["item"]
-            cart.remove(product)
-
-        elif "clear" in request.data:
-            cart.clear()
-
-        else:
-            product = request.data
-            print(product)
-            cart.add(
-                item=product["item"],
-                quantity=product["quantity"],
-                overide_quantity=(
-                    product["overide_quantity"]
-                    if "overide_quantity" in product
-                    else False
-                ),
+        order = Order.objects.create(employee_id=1)
+        order_items_list = []
+        for item in order_items:
+            order_items_list.append(
+                OrderItem(
+                    item_id=item.get("id"), order=order, quantity=item.get("quantity")
+                )
             )
+            product = Item.objects.get(id=item.get("id"))
+            product.on_stock -= item.get("quantity")
+            product.save()
 
-        return Response({"message": "cart updated"}, status=status.HTTP_202_ACCEPTED)
+        OrderItem.objects.bulk_create(order_items_list)
+        serializer = OrderSerializer(order, many=False)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        # print(order_item)
+        # order_qs = Order.objects.filter(employee_id=1)
+        # if order_qs.exists():
+        #     order = order_qs[0]
+        #
+        #     # check if the order item is in the order
+        #     if order.items.filter(item_id=item.id).exists():
+        #         order_item.quantity += 1
+        #         order_item.save()
+        #         return Response(status=status.HTTP_200_OK)
+        #     else:
+        #         order.items.add(order_item)
+        #         return Response(status=status.HTTP_200_OK)
+        # else:
+        #     ordered_date = timezone.now()
+        #     order = Order.objects.create(employee_id=1, modified_at=ordered_date)
+        #     order.items.add(order_item)
+        #     return Response(status=status.HTTP_200_OK)
 
 
 # ---------------- account views ------------ #

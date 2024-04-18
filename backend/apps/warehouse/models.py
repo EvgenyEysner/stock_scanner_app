@@ -6,9 +6,8 @@ from django.core.files import File
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from apps.account.models import User
-
 from apps.account.models import Employee
+from apps.account.models import User
 
 
 class Stock(models.Model):
@@ -111,7 +110,7 @@ class Item(models.Model):
 
 
 class Order(models.Model):
-    employee = models.OneToOneField(
+    employee = models.ForeignKey(
         Employee, on_delete=models.PROTECT, verbose_name=Employee._meta.verbose_name
     )
 
@@ -136,12 +135,6 @@ class Order(models.Model):
 
     def get_total(self):
         return sum(item.quantity for item in self.items.all())
-
-    # def save(self, *args, **kwargs):
-    #     for item in self.items.all():
-    #         product = Item.objects.get(id=item.item_id)
-    #         product.on_stock -= item.quantity
-    #         product.save()
 
 
 class OrderItem(models.Model):
