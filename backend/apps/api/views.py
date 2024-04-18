@@ -1,4 +1,3 @@
-from apps.cart.cart import Cart
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
