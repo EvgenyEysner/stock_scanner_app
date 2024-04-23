@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     "fastidious-croquembouche-21a428.netlify.app",
     "127.0.0.1",
     "localhost",
+    "217.160.10.28"
 ]
 
 # Application definition
