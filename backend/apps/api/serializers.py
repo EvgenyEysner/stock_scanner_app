@@ -1,9 +1,5 @@
-from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.models import update_last_login
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.settings import api_settings
 
 from apps.account.models import User
 from apps.warehouse.models import Item, Order, OrderItem
