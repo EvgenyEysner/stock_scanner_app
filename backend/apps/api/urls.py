@@ -7,6 +7,8 @@ from apps.api.views import (
     OrderListView,
     OrderItemListView,
     UserView,
+    UserLogin,
+    UserLogout,
 )
 
 urlpatterns = [
@@ -16,7 +18,8 @@ urlpatterns = [
     path("order/", OrderListView.as_view(), name="order"),
     path("order-items/", OrderItemListView.as_view(), name="order-items"),
     path("cart/", CartAPI.as_view(), name="cart"),
+
     # --------- account urls ------------------ #
-    # path("login/", LoginViewSet.as_view({"post": "create"})),
-    # path("refresh/", RefreshViewSet.as_view({"post": "create"})),
+    path("login/", UserLogin.as_view(), name="login"),
+    path("logout/", UserLogout.as_view(), name="logout"),
 ]

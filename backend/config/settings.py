@@ -66,8 +66,6 @@ LOCAL_APPS = ("apps.account", "apps.warehouse")
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-CART_SESSION_ID = "cart"
-
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -194,78 +192,11 @@ CORS_EXPOSE_HEADERS = [
     "content-type",
 ]
 
-REST_AUTH = {
-    "LOGIN_SERIALIZER": "dj_rest_auth.serializers.LoginSerializer",
-    "TOKEN_SERIALIZER": "dj_rest_auth.serializers.TokenSerializer",
-    "JWT_SERIALIZER": "dj_rest_auth.serializers.JWTSerializer",
-    "JWT_SERIALIZER_WITH_EXPIRATION": "dj_rest_auth.serializers.JWTSerializerWithExpiration",
-    "JWT_TOKEN_CLAIMS_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
-    "USER_DETAILS_SERIALIZER": "dj_rest_auth.serializers.UserDetailsSerializer",
-    "PASSWORD_RESET_SERIALIZER": "dj_rest_auth.serializers.PasswordResetSerializer",
-    "PASSWORD_RESET_CONFIRM_SERIALIZER": "dj_rest_auth.serializers.PasswordResetConfirmSerializer",
-    "PASSWORD_CHANGE_SERIALIZER": "dj_rest_auth.serializers.PasswordChangeSerializer",
-    "REGISTER_SERIALIZER": "dj_rest_auth.registration.serializers.RegisterSerializer",
-    "REGISTER_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
-    "TOKEN_MODEL": "rest_framework.authtoken.models.Token",
-    "TOKEN_CREATOR": "dj_rest_auth.utils.default_create_token",
-    "PASSWORD_RESET_USE_SITES_DOMAIN": False,
-    "OLD_PASSWORD_FIELD_ENABLED": False,
-    "LOGOUT_ON_PASSWORD_CHANGE": False,
-    "SESSION_LOGIN": True,
-    "USE_JWT": False,
-    "JWT_AUTH_COOKIE": None,
-    "JWT_AUTH_REFRESH_COOKIE": None,
-    "JWT_AUTH_REFRESH_COOKIE_PATH": "/",
-    "JWT_AUTH_SECURE": False,
-    "JWT_AUTH_HTTPONLY": True,
-    "JWT_AUTH_SAMESITE": "Lax",
-    "JWT_AUTH_RETURN_EXPIRATION": False,
-    "JWT_AUTH_COOKIE_USE_CSRF": False,
-    "JWT_AUTH_COOKIE_ENFORCE_CSRF_ON_UNAUTHENTICATED": False,
-}
-
-# SIMPLE_JWT = {
-#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-#     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-#     "ROTATE_REFRESH_TOKENS": True,
-#     "BLACKLIST_AFTER_ROTATION": True,
-#     "UPDATE_LAST_LOGIN": False,
-#     "ALGORITHM": "HS256",
-#     "SIGNING_KEY": SECRET_KEY,
-#     "VERIFYING_KEY": "",
-#     "AUDIENCE": None,
-#     "ISSUER": None,
-#     "JSON_ENCODER": None,
-#     "JWK_URL": None,
-#     "LEEWAY": 0,
-#     "AUTH_HEADER_TYPES": ("Bearer",),
-#     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-#     "USER_ID_FIELD": "id",
-#     "USER_ID_CLAIM": "user_id",
-#     "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
-#     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-#     "TOKEN_TYPE_CLAIM": "token_type",
-#     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
-#     "JTI_CLAIM": "jti",
-#     "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
-#     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
-#     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
-#     "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
-#     "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
-#     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
-#     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
-#     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
-#     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
-# }
-
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
-    ],
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
     ),
 }
 
@@ -280,15 +211,21 @@ ACCOUNT_USERNAME_REQUIRED = False
 # CSRF_USE_SESSIONS = False
 # CSRF_FAILURE_VIEW = "account.views.csrf_failure"
 # CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
-# CSRF_COOKIE_HTTPONLY = env.bool("DJANGO_CSRF_COOKIE_HTTPONLY")
+CSRF_COOKIE_HTTPONLY = False
 # CSRF_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE")
-# CSRF_COOKIE_SAMESITE = env.str("DJANGO_SESSION_COOKIE_SAMESITE")
+CSRF_COOKIE_SAMESITE = "Strict"
 
-# SESSION_COOKIE_SAMESITE = env.str('DJANGO_SESSION_COOKIE_SAMESITE')
+#-------------- Prod -----------------#
+# PROD ONLY
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+#-------------- Prod -----------------#
+
+SESSION_COOKIE_SAMESITE = "Strict"
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_COOKIE_AGE = 1209600  # 2 weeks
 # SESSION_COOKIE_SECURE = env.bool('DJANGO_SESSION_COOKIE_SECURE')
-# SESSION_COOKIE_HTTPONLY = env.bool('DJANGO_CSRF_COOKIE_HTTPONLY')
+SESSION_COOKIE_HTTPONLY = True
 
 # CSRF_COOKIE_DOMAIN = env.str('DJANGO_COOKIE_DOMAIN')
 # SESSION_COOKIE_DOMAIN = env.str('DJANGO_COOKIE_DOMAIN')

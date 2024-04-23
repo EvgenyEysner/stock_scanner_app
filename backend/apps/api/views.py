@@ -5,22 +5,25 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.contrib.auth import get_user_model, login, logout
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
 from apps.account.models import User
 from apps.api.serializers import (
     ItemSerializer,
-    LoginSerializer,
     OrderSerializer,
     OrderItemSerializer,
     UserSerializer,
+    UserLoginSerializer,
 )
+from apps.api.validation import validate_password, validate_email
 from apps.warehouse.models import Item, Order, OrderItem
 
 
 class UserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
 
 
 class ItemsListView(generics.ListAPIView):
@@ -29,6 +32,7 @@ class ItemsListView(generics.ListAPIView):
 
 
 class ItemDetailView(generics.RetrieveAPIView):
+    permission_classes = (AllowAny,)
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
     lookup_field = "ean"
@@ -53,22 +57,20 @@ class CartAPI(APIView):
     # permission_classes = (IsAuthenticated,)
     permission_classes = (AllowAny,)
 
-    def get(self, request, format=None):
-        cart = Cart(request)
-
-        return Response(
-            {"data": list(cart.__iter__()), "cart_total": cart.get_total()},
-            status=status.HTTP_200_OK,
-        )
+    # def get(self, request, format=None):
+    #     cart = Cart(request)
+    #
+    #     return Response(
+    #         {"data": list(cart.__iter__()), "cart_total": cart.get_total()},
+    #         status=status.HTTP_200_OK,
+    #     )
 
     def post(self, request, *args, **kwargs):
         order_items = request.data
-        # Todo GET User
-        user = request.user
-
-        order = Order.objects.create(employee_id=1)
+        # Todo SET/GET User
+        order = Order.objects.create(employee_id=1, note=order_items["note"])
         order_items_list = []
-        for item in order_items:
+        for item in order_items["data"]:
             order_items_list.append(
                 OrderItem(
                     item_id=item.get("id"), order=order, quantity=item.get("quantity")
@@ -104,32 +106,25 @@ class CartAPI(APIView):
 
 
 # ---------------- account views ------------ #
-class LoginViewSet(ModelViewSet, TokenObtainPairView):
-    serializer_class = LoginSerializer
+class UserLogin(APIView):
     permission_classes = (AllowAny,)
-    http_method_names = ["post"]
+    authentication_classes = (SessionAuthentication, BasicAuthentication)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+    def post(self, request):
+        data = request.data
+        assert validate_email(data)
+        assert validate_password(data)
+        serializer = UserLoginSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.check_user(data)
+            login(request, user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
 
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
-
-class RefreshViewSet(ViewSet, TokenRefreshView):
+class UserLogout(APIView):
     permission_classes = (AllowAny,)
-    http_method_names = ["post"]
+    authentication_classes = ()
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
-
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+    def post(self, request):
+        logout(request)
+        return Response(status=status.HTTP_200_OK)

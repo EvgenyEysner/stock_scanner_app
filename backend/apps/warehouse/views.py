@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 
-# Create your views here.
+from apps.warehouse.models import Item
+
+
+class EanView(ListView):
+    model = Item
+    context_object_name = "items"
+    template_name = "ean.html"

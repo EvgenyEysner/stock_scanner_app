@@ -1,5 +1,7 @@
+from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.models import update_last_login
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 
@@ -45,18 +47,13 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_field = ["is_active", "is_staff", "date_joined"]
 
 
-class LoginSerializer(TokenObtainPairSerializer):
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
 
-    def validate(self, attrs):
-        data = super().validate(attrs)
+    def check_user(self, clean_data):
+        user = User.objects.filter(email=clean_data['email']).first()
 
-        refresh = self.get_token(self.user)
-
-        data["user"] = UserSerializer(self.user).data
-        data["refresh"] = str(refresh)
-        data["access"] = str(refresh.access_token)
-
-        if api_settings.UPDATE_LAST_LOGIN:
-            update_last_login(None, self.user)
-
-        return data
+        if not user:
+            raise ValidationError('User not found')
+        return user
