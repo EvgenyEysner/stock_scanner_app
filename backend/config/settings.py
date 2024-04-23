@@ -56,9 +56,6 @@ THIRD_PARTY_APPS = (
     "django_extensions",
     "corsheaders",
     "rest_framework",
-    "rest_framework.authtoken",
-    "dj_rest_auth",
-    "rest_framework_simplejwt.token_blacklist",
 )
 
 # add our Apps here
