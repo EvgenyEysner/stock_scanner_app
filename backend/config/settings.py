@@ -164,6 +164,8 @@ FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 CORS_ALLOWED_ORIGINS = (
     "https://cozy-manatee-9a42b8.netlify.app",
     "http://localhost:3000",
+    "https://localhost:5173",
+    "http://localhost:5173",
     "http://127.0.0.1:8000",
     "https://demo.softeis.net",
 )
