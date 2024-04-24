@@ -33,10 +33,8 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 # ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
 ALLOWED_HOSTS = [
     "demo.softeis.net",
-    "fastidious-croquembouche-21a428.netlify.app",
     "127.0.0.1",
     "localhost",
-    "217.160.10.28"
 ]
 
 # Application definition
@@ -163,7 +161,7 @@ FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 # CORS
 CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST")
 CORS_ALLOWED_ORIGINS = (
-    "https://enchanting-baklava-c0f2a4.netlify.app",
+    "https://bucolic-pixie-739bce.netlify.app",
     "https://192.168.178.25:5173",
     "http://192.168.178.25:5173",
     "http://localhost:3000",
@@ -209,9 +207,9 @@ ACCOUNT_USERNAME_REQUIRED = False
 # CSRF_USE_SESSIONS = False
 # CSRF_FAILURE_VIEW = "account.views.csrf_failure"
 # CSRF_TRUSTED_ORIGINS = env.list("DJANGO_CSRF_TRUSTED_ORIGINS")
-CSRF_COOKIE_HTTPONLY = False
+# CSRF_COOKIE_HTTPONLY = False
 # CSRF_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE")
-CSRF_COOKIE_SAMESITE = "Strict"
+# CSRF_COOKIE_SAMESITE = "Strict"
 
 #-------------- Prod -----------------#
 # PROD ONLY
@@ -219,11 +217,11 @@ CSRF_COOKIE_SAMESITE = "Strict"
 # SESSION_COOKIE_SECURE = True
 #-------------- Prod -----------------#
 
-SESSION_COOKIE_SAMESITE = "Strict"
+# SESSION_COOKIE_SAMESITE = "Strict"
 # SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # SESSION_COOKIE_AGE = 1209600  # 2 weeks
 # SESSION_COOKIE_SECURE = env.bool('DJANGO_SESSION_COOKIE_SECURE')
-SESSION_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_HTTPONLY = True
 
 # CSRF_COOKIE_DOMAIN = env.str('DJANGO_COOKIE_DOMAIN')
 # SESSION_COOKIE_DOMAIN = env.str('DJANGO_COOKIE_DOMAIN')
