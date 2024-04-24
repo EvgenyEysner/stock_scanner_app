@@ -35,7 +35,7 @@ ALLOWED_HOSTS = [
     "demo.softeis.net",
     "127.0.0.1",
     "localhost",
-    "bucolic-pixie-739bce.netlify.app"
+    "cozy-manatee-9a42b8.netlify.app"
 ]
 
 # Application definition
@@ -162,7 +162,7 @@ FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 # CORS
 # CORS_ORIGIN_WHITELIST = "https://bucolic-pixie-739bce.netlify.app"
 CORS_ALLOWED_ORIGINS = (
-    "https://bucolic-pixie-739bce.netlify.app",
+    "https://cozy-manatee-9a42b8.netlify.app",
     "http://localhost:3000",
     "http://127.0.0.1:8000",
     "https://demo.softeis.net",
