@@ -160,12 +160,10 @@ FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 CORS_ALLOW_ALL_ORIGINS = True
 # CORS
 # CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST")
-# CORS_ALLOWED_ORIGINS = (
-#     "https://bucolic-pixie-739bce.netlify.app",
-#     "https://192.168.178.25:5173",
-#     "http://192.168.178.25:5173",
-#     "http://localhost:3000",
-# )
+CORS_ALLOWED_ORIGINS = (
+    "https://bucolic-pixie-739bce.netlify.app",
+    "http://localhost:3000",
+)
 # CORS_ALLOW_CREDENTIALS = True
 # CORS_ALLOW_METHODS = default_methods
 #
