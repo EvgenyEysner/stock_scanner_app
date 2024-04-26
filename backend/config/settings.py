@@ -158,37 +158,37 @@ STATICFILES_FINDERS = (
 STATICFILES_DIRS = ("static",)
 
 FRONTEND_URL = env("DJANGO_FRONTEND_URL")
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 # CORS
 # CORS_ORIGIN_WHITELIST = "https://bucolic-pixie-739bce.netlify.app"
-# CORS_ALLOWED_ORIGINS = (
-#     "https://fluffy-beignet-7b4a88.netlify.app",
-#     "http://localhost:3000",
-#     "https://localhost:5173",
-#     "http://localhost:5173",
-#     "https://192.168.178.102:5173",
-#     "http://127.0.0.1:8000",
-#     "https://demo.softeis.net",
-# )
-#
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_METHODS = default_methods
-#
-# CORS_ALLOW_HEADERS = [
-#     "accept",
-#     "authorization",
-#     "content-type",
-#     "user-agent",
-#     "x-csrftoken",
-#     "x-requested-with",
-# ]
-#
-# CORS_EXPOSE_HEADERS = [
-#     "accept",
-#     "accept-encoding",
-#     "authorization",
-#     "content-type",
-# ]
+CORS_ALLOWED_ORIGINS = (
+    "https://fluffy-beignet-7b4a88.netlify.app",
+    "http://localhost:3000",
+    "https://localhost:5173",
+    "http://localhost:5173",
+    "https://192.168.178.102:5173",
+    "http://127.0.0.1:8000",
+    "https://demo.softeis.net",
+)
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = default_methods
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+CORS_EXPOSE_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+]
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
