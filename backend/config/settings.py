@@ -174,21 +174,21 @@ CORS_ALLOWED_ORIGINS = (
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = default_methods
 
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
-
-CORS_EXPOSE_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-]
+# CORS_ALLOW_HEADERS = [
+#     "accept",
+#     "authorization",
+#     "content-type",
+#     "user-agent",
+#     "x-csrftoken",
+#     "x-requested-with",
+# ]
+#
+# CORS_EXPOSE_HEADERS = [
+#     "accept",
+#     "accept-encoding",
+#     "authorization",
+#     "content-type",
+# ]
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
