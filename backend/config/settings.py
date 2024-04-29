@@ -162,7 +162,7 @@ FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 # CORS
 # CORS_ORIGIN_WHITELIST = "https://bucolic-pixie-739bce.netlify.app"
 CORS_ALLOWED_ORIGINS = (
-    "https://fluffy-beignet-7b4a88.netlify.app",
+    "https://adorable-mermaid-e6cb05.netlify.app",
     "http://localhost:3000",
     "https://localhost:5173",
     "http://localhost:5173",
