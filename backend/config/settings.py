@@ -35,7 +35,7 @@ ALLOWED_HOSTS = [
     "demo.softeis.net",
     "127.0.0.1",
     "localhost",
-    "eclectic-melomakarona-c771f0.netlify.app"
+    "eclectic-melomakarona-c771f0.netlify.app",
 ]
 
 # Application definition
@@ -163,14 +163,14 @@ FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 CORS_ALLOWED_ORIGINS = (
     "http://localhost:3000",
     "http://localhost:5173",
-    "https://demo.softeis.net",
 )
 
+CORS_ALLOW_HEADERS = [
+    "access-control-allow-origin",
+    "authorization",
+]
+
 CORS_ALLOW_METHODS = default_methods
-
-CORS_ALLOW_CREDENTIALS = True
-CORS_URLS_REGEX = "/api/.*"
-
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
