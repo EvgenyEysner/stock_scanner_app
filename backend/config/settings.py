@@ -158,12 +158,13 @@ STATICFILES_FINDERS = (
 
 STATICFILES_DIRS = ("static",)
 
-FRONTEND_URL = env("DJANGO_FRONTEND_URL")
+# FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 
 # CORS
 CORS_ALLOWED_ORIGINS = (
     "http://localhost:3000",
     "http://localhost:5173",
+    "https://precious-pixie-eb7a90.netlify.app",
 )
 
 CORS_ALLOW_METHODS = (
@@ -175,6 +176,10 @@ CORS_ALLOW_HEADERS = (
 )
 
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "https://precious-pixie-eb7a90.netlify.app"
+]
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
