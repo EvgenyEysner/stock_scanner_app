@@ -161,25 +161,34 @@ STATICFILES_DIRS = ("static",)
 # FRONTEND_URL = env("DJANGO_FRONTEND_URL")
 
 # CORS
-CORS_ALLOWED_ORIGINS = (
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "https://precious-pixie-eb7a90.netlify.app",
-)
 
-CORS_ALLOW_METHODS = (
-    *default_methods,
-)
-
-CORS_ALLOW_HEADERS = (
-    *default_headers,
-)
+CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST", default=[])
 
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "https://precious-pixie-eb7a90.netlify.app"
-]
+
+CORS_ALLOW_HEADERS = default_headers + (
+    "x-xsrf-token",
+    "x-csrftoken"
+)
+# CORS_ALLOWED_ORIGINS = (
+#     "http://localhost:3000",
+#     "http://localhost:5173",
+#     "https://precious-pixie-eb7a90.netlify.app",
+# )
+#
+# CORS_ALLOW_METHODS = (
+#     *default_methods,
+# )
+#
+# CORS_ALLOW_HEADERS = (
+#     *default_headers,
+# )
+#
+# CORS_ALLOW_CREDENTIALS = True
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:5173",
+#     "https://precious-pixie-eb7a90.netlify.app"
+# ]
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
@@ -238,7 +247,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
+                      "%(process)d %(thread)d %(message)s"
         },
     },
     "handlers": {
