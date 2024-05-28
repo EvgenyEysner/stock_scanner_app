@@ -36,7 +36,7 @@ ALLOWED_HOSTS = [
     "demo.softeis.net",
     "127.0.0.1",
     "localhost",
-    "eclectic-melomakarona-c771f0.netlify.app",
+    "charming-faun-ededdc.netlify.app",
 ]
 
 # Application definition
