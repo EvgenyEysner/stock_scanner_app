@@ -36,7 +36,7 @@ ALLOWED_HOSTS = [
     "demo.softeis.net",
     "127.0.0.1",
     "localhost",
-    "illustrious-creponne-b60cb8.netlify.app",
+    "luminous-begonia-9708f4.netlify.app",
 ]
 
 # Application definition
