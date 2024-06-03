@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -36,20 +37,21 @@ class OrderSerializer(serializers.ModelSerializer):
 # -------------- accounts serializers --------------- #
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "email", "is_active", "is_staff", "date_joined"]
-        read_only_field = ["is_active", "is_staff", "date_joined"]
-
-
-class UserLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    password = serializers.CharField()
-
-    def check_user(self, clean_data):
-        user = User.objects.filter(email=clean_data['email']).first()
-
-        if not user:
-            raise ValidationError('User not found')
-        return user
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ["id", "email", "is_active", "is_staff", "date_joined"]
+#         read_only_field = ["is_active", "is_staff", "date_joined"]
+#
+#
+# class UserLoginSerializer(serializers.Serializer):
+#     email = serializers.EmailField()
+#     password = serializers.CharField()
+#
+#     def check_user(self, clean_data):
+#         user = authenticate(
+#             username=clean_data["email"], password=clean_data["password"]
+#         )
+#         if not user:
+#             raise ValidationError("user not found")
+#         return user
