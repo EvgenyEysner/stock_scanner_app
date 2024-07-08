@@ -4,8 +4,8 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
-from corsheaders.defaults import default_methods
 from corsheaders.defaults import default_headers
+from corsheaders.defaults import default_methods
 
 env = environ.Env(
     # set casting, default value
@@ -35,7 +35,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = [
     "demo.softeis.net",
     "127.0.0.1",
-    "localhost",
+    "0.0.0.0",
     "luminous-begonia-9708f4.netlify.app",
 ]
 
@@ -57,6 +57,7 @@ THIRD_PARTY_APPS = (
     "django_extensions",
     "corsheaders",
     "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
 )
 
 # add our Apps here
@@ -167,41 +168,42 @@ CORS_ORIGIN_WHITELIST = env.list("DJANGO_CORS_ORIGIN_WHITELIST", default=[])
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_HEADERS = default_headers + (
-    "x-xsrf-token",
-    "x-csrftoken"
-)
-# CORS_ALLOWED_ORIGINS = (
-#     "http://localhost:3000",
-#     "http://localhost:5173",
-#     "https://precious-pixie-eb7a90.netlify.app",
-# )
-#
-# CORS_ALLOW_METHODS = (
-#     *default_methods,
-# )
-#
-# CORS_ALLOW_HEADERS = (
-#     *default_headers,
-# )
-#
-# CORS_ALLOW_CREDENTIALS = True
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:5173",
-#     "https://precious-pixie-eb7a90.netlify.app"
-# ]
+CORS_ALLOW_HEADERS = default_headers + ("x-xsrf-token", "x-csrftoken")
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
 }
 
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
+    "REFRESH_TOKEN_LIFETIME": timedelta(minutes=50),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "VERIFYING_KEY": SECRET_KEY,
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+    "JTI_CLAIM": "jti",
+}
+
+# ACCOUNT_AUTHENTICATION_METHOD = "email"
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = False
 
 # CSRF
 # store csrf token in cookie instead of the session to make it possible
@@ -209,7 +211,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 
 # CSRF_USE_SESSIONS = False
 # CSRF_FAILURE_VIEW = "account.views.csrf_failure"
-CSRF_TRUSTED_ORIGINS = ("https://localhost:5173", )
+CSRF_TRUSTED_ORIGINS = ("https://localhost:5173",)
 # CSRF_COOKIE_HTTPONLY = False
 # CSRF_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE")
 # CSRF_COOKIE_SAMESITE = "Strict"
@@ -248,7 +250,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-                      "%(process)d %(thread)d %(message)s"
+            "%(process)d %(thread)d %(message)s"
         },
     },
     "handlers": {

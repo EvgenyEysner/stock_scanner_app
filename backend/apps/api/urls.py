@@ -1,4 +1,5 @@
 from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 from apps.api.views import (
     ItemsListView,
@@ -7,8 +8,6 @@ from apps.api.views import (
     OrderListView,
     OrderItemListView,
     UserView,
-    UserLogin,
-    UserLogout,
 )
 
 urlpatterns = [
@@ -18,8 +17,6 @@ urlpatterns = [
     path("order/", OrderListView.as_view(), name="order"),
     path("order-items/", OrderItemListView.as_view(), name="order-items"),
     path("cart/", CartAPI.as_view(), name="cart"),
-
-    # --------- account urls ------------------ #
-    path("login/", UserLogin.as_view(), name="login"),
-    path("logout/", UserLogout.as_view(), name="logout"),
+    path("token/", TokenObtainPairView.as_view()),
+    path("token/refresh/", TokenRefreshView.as_view()),
 ]
