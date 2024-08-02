@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.core.mail import send_mail
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -65,8 +67,19 @@ class CartAPI(APIView):
             product.on_stock -= item.get("quantity")
             product.save()
 
+            # ---------------- Send mail with order data ------------ #
+            subject = f"Bestellung Lager {item.get('stock')}"
+            message = f"Auftrag erfasst durch: {order.employee}, Auftragsdaten: {order_items['data']}"
+            send_mail(
+                subject,
+                message,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[settings.RECIPIENT_ADDRESS],
+            )
+
         OrderItem.objects.bulk_create(order_items_list)
         serializer = OrderSerializer(order, many=False)
+
         if not serializer.data:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
