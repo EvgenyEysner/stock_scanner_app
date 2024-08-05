@@ -86,7 +86,7 @@ class Item(models.Model):
     )
     barcode = models.ImageField(
         verbose_name=_("Strichcode"),
-        default="item/barcode/barcode.svg",
+        # default="item/barcode/barcode.svg",
         upload_to="barcode",
         null=True,
         blank=True,

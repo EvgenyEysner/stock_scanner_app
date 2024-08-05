@@ -30,22 +30,49 @@ def add_products(file):
 
         for row in reader:
             category = Category.objects.filter(name=row["Kategorie"]).first()
-            print(category)
+
             if row["EAN"].isdigit() and len(row["EAN"]) == 13:
                 ean = row["EAN"]
 
             if row["Maßeinheit"] == "Rolle":
-                unit = 3
-                Item.objects.create(
+                item = Item.objects.create(
                     name=row["Material"],
                     manufacturer_number=row["Hersteller Artikelnummer"],
-                    category_id=Category.objects.get(name=row["Kategorie"]).id,
+                    category_id=category.id,
                     stock_id=1,
-                    unit=unit,
+                    unit=3,
                     ean=ean,
                     on_stock=10,
+                    image="default-product-image.jpg",
                     position_number=row["Pos."]
                 )
+
+            if row["Maßeinheit"] == "Meter":
+                item = Item.objects.create(
+                    name=row["Material"],
+                    manufacturer_number=row["Hersteller Artikelnummer"],
+                    category_id=category.id,
+                    stock_id=1,
+                    unit=2,
+                    ean=ean,
+                    on_stock=10,
+                    image="default-product-image.jpg",
+                    position_number=row["Pos."]
+                )
+
+            if row["Maßeinheit"] == "Stück":
+                item = Item.objects.create(
+                    name=row["Material"],
+                    manufacturer_number=row["Hersteller Artikelnummer"],
+                    category_id=category.id,
+                    stock_id=1,
+                    unit=1,
+                    ean=ean,
+                    on_stock=10,
+                    image="default-product-image.jpg",
+                    position_number=row["Pos."]
+                )
+            print(item)
 
 
 class Command(BaseCommand):

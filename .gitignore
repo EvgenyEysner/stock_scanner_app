@@ -57,7 +57,7 @@ test-reports
 *.pot
 
 # Media dir and collected statics
-backend/media/*
+#backend/media/*
 !backend/media/test-data/*
 backend/staticfiles
 
