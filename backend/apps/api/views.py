@@ -57,7 +57,7 @@ class CartAPI(APIView):
             employee_id=request.user.employee.id, note=order_items["note"]
         )
         order_items_list = []
-        for item in order_items["data"]:
+        for item in order_items["data"]["cart"]:
             order_items_list.append(
                 OrderItem(
                     item_id=item.get("id"), order=order, quantity=item.get("quantity")
@@ -69,7 +69,8 @@ class CartAPI(APIView):
 
             # ---------------- Send mail with order data ------------ #
             subject = f"Bestellung Lager {item.get('stock')}"
-            message = f"Auftrag erfasst durch: {order.employee}, Auftragsdaten: {order_items['data']}"
+            message = f"Auftrag erfasst durch: {order.employee}, + \n" \
+                      f"Auftragsdaten: {[item for item in order_items['data']['cart']]}"
             send_mail(
                 subject,
                 message,
