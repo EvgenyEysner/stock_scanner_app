@@ -292,3 +292,46 @@ EMAIL_PORT = env("EMAIL_PORT")
 EMAIL_USE_TLS = True
 
 RECIPIENT_ADDRESS = env("RECIPIENT_ADDRESS")
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Lagerverwaltung",
+    "site_header": "Lageradmin",
+    "site_brand": "Lagerverwaltung",
+    # "site_logo": "fas fa-solar-panel",
+    "welcome_sign": "Willkommen bei JP Servicefee GmbH",
+    "hide_apps": ["django_db_logger", "auth", "token_blacklist"],
+    "hide_models": ["account.user"],
+    "related_modal_active": True,
+    "icons": {
+        "account.user": "fas fa-id-card",
+        "account.employee": "fas fa-users",
+        "warehouse.stock": "fas fa-cubes",
+        "warehouse.category": "fas fa-globe-europe",
+        "warehouse.item": "fas fa-store",
+        "warehouse.order": "fas fa-shipping-fast",
+    },
+    "order_with_respect_to": [
+        "account.user",
+        "account.employee",
+        "warehouse.stock",
+        "warehouse.item",
+        "warehouse.category",
+        "warehouse.order"
+    ],
+    "show_ui_builder": False,
+    # "custom_css": custom_css,
+    # "changeform_format": "horizontal_tabs",
+    # "custom_links": {
+    #     "warehouse": [
+    #         {
+    #             "name": "Import/Export",
+    #             "url": "admin:import-export",
+    #             "icon": "fas fa-exchange-alt",
+    #             # TODO: Refine custom permissions
+    #             # "permissions": [
+    #             #     "customer.importexport",
+    #             # ],
+    #         }
+    #     ]
+    # },
+}

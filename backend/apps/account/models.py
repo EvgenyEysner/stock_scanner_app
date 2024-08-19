@@ -34,8 +34,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name = _("Nutzer:in")
-        verbose_name_plural = _("Nutzer:innen")
+        verbose_name = _("Benutzer:in")
+        verbose_name_plural = _("Benutzer:innen")
 
     def clean(self):
         super().clean()
