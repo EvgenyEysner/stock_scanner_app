@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from apps.account.models import Employee
+from apps.account.forms import UserChangeForm, UserCreateForm
+from apps.account.models import Employee, User
 
 
 @admin.register(Employee)
@@ -25,3 +26,77 @@ class EmployeeAdmin(admin.ModelAdmin):
     @admin.display(description="Mitarbeiter")
     def employee_name(self, obj):
         return f"{obj.first_name} {obj.last_name}"
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    form = UserChangeForm
+    add_form = UserCreateForm
+    list_display = (
+        "email",
+        "is_active",
+        "date_joined",
+        "is_staff",
+    )
+
+    list_filter = ("is_active",)
+    search_fields = ("email",)
+    readonly_fields = ("last_login",)
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                    "password",
+                    "last_login",
+                    "is_active",
+                    "is_superuser",
+                )
+            },
+        ),
+    )
+
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "password1",
+                    "password2",
+                    "is_superuser",
+                ),
+            },
+        ),
+    )
+
+    @admin.display(
+        description="Personal-Nr.",
+        ordering="employee__personnel_number",
+        empty_value="-",
+    )
+    def personnel_number(self, obj):
+        if hasattr(obj, "employee"):
+            return obj.employee.personnel_number
+
+    @admin.display(description="Vorname", ordering="employee__first_name")
+    def first_name(self, obj):
+        if not hasattr(obj, "employee"):
+            return "-"
+        return obj.employee.first_name
+
+    @admin.display(description="Nachname", ordering="employee__last_name")
+    def last_name(self, obj):
+        if not hasattr(obj, "employee"):
+            return "-"
+        return obj.employee.last_name
+
+    @admin.display(description="Admin", ordering="is_superuser", boolean=True)
+    def is_admin(self, obj):
+        return obj.is_superuser
+
+    @admin.display(description="Backend-Zugang", boolean=True)
+    def is_staff(self, obj):
+        return obj.is_staff
