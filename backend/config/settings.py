@@ -298,9 +298,9 @@ JAZZMIN_SETTINGS = {
     "site_header": "Lageradmin",
     "site_brand": "Lagerverwaltung",
     # "site_logo": "fas fa-solar-panel",
-    "welcome_sign": "Willkommen bei JP Servicefee GmbH",
+    "welcome_sign": "Lageverwaltung Software",
     "hide_apps": ["django_db_logger", "auth", "token_blacklist"],
-    "hide_models": ["account.user"],
+    # "hide_models": ["account.user"],
     "related_modal_active": True,
     "icons": {
         "account.user": "fas fa-id-card",
@@ -316,21 +316,21 @@ JAZZMIN_SETTINGS = {
         "warehouse.stock",
         "warehouse.item",
         "warehouse.category",
-        "warehouse.order"
+        "warehouse.order",
     ],
     "show_ui_builder": False,
     # "custom_css": custom_css,
     # "changeform_format": "horizontal_tabs",
     # "custom_links": {
-    #     "warehouse": [
+    #     "account": [
     #         {
-    #             "name": "Import/Export",
-    #             "url": "admin:import-export",
-    #             "icon": "fas fa-exchange-alt",
-    #             # TODO: Refine custom permissions
-    #             # "permissions": [
-    #             #     "customer.importexport",
-    #             # ],
+    #             "name": "Benutzer",
+    #             "url": "admin:user",
+    #             # "icon": "fas fa-exchange-alt",
+    #             # # TODO: Refine custom permissions
+    #             "permissions": [
+    #                 "user.is_staff",
+    #             ],
     #         }
     #     ]
     # },
