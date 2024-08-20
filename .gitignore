@@ -57,7 +57,7 @@ test-reports
 *.pot
 
 # Media dir and collected statics
-#backend/media/*
+backend/media/*
 !backend/media/test-data/*
 backend/staticfiles
 
@@ -66,3 +66,4 @@ backend/staticfiles
 /startbootstrap-clean-blog-gh-pages/
 /backend/docker-compose.env
 /backend/.env
+/backend/media/
