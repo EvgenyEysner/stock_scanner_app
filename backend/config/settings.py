@@ -4,6 +4,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
+from celery.schedules import crontab
 from corsheaders.defaults import default_headers
 from corsheaders.defaults import default_methods
 
@@ -274,17 +275,24 @@ LOGGING = {
     },
 }
 
-# Celery settings
+# ------ Celery settings ------ #
 CELERY_TIMEZONE = "Europe/Berlin"
-# CELERY_BROKER_URL = env("DJANGO_CELERY_BROKER_URL")
-# CELERY_TASK_ALWAYS_EAGER = env("DJANGO_CELERY_TASK_ALWAYS_EAGER")
+CELERY_BROKER_URL = env("DJANGO_CELERY_BROKER_URL")
+CELERY_TASK_ALWAYS_EAGER = env("DJANGO_CELERY_TASK_ALWAYS_EAGER")
 
-CELERY_RESULT_BACKEND = "rpc://"
+CELERY_CACHE_BACKEND = "default"
 CELERY_TASK_CREATE_MISSING_QUEUES = True
 CELERY_RETRY_DELAY = 15
 CELERY_RETRY_MAX_TIMES = 15  # 15 retries
 
-# Email server configuration
+CELERY_BEAT_SCHEDULE = {
+    "check stock": {
+        "task": "apps.api.tasks.check_stock",
+        "schedule": crontab(hour=3, minute=0),
+    },
+}
+
+# ------ Email server configuration ------ #
 EMAIL_HOST = env("EMAIL_HOST")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
