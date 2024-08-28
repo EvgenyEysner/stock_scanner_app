@@ -29,6 +29,12 @@ services:
     depends_on:
       - postgres
 
+  rabbitmq:
+    image: rabbitmq:3.11.3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
 volumes:
   postgres-db:
   pgadmin:
