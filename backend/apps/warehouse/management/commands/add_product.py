@@ -44,7 +44,7 @@ def add_products(file):
                     ean=ean,
                     on_stock=10,
                     image="default-product-image.jpg",
-                    position_number=row["Pos."]
+                    position_number=row["Pos."],
                 )
 
             if row["Maßeinheit"] == "Meter":
@@ -57,7 +57,7 @@ def add_products(file):
                     ean=ean,
                     on_stock=10,
                     image="default-product-image.jpg",
-                    position_number=row["Pos."]
+                    position_number=row["Pos."],
                 )
 
             if row["Maßeinheit"] == "Stück":
@@ -70,7 +70,7 @@ def add_products(file):
                     ean=ean,
                     on_stock=10,
                     image="default-product-image.jpg",
-                    position_number=row["Pos."]
+                    position_number=row["Pos."],
                 )
             print(item)
 
@@ -82,11 +82,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # file = str(input("Dateipfad eingeben: "))
-        file = "../backend/Bedarfsliste.csv"
-
-        # add_category(file)
+        file = "../backend/bedarfsliste_08_2024.csv"
         add_products(file)
-        # with open(file, encoding="UTF-8") as f:
-        #     reader = csv.DictReader(f, delimiter=",")
-        # for row in reader:
-        #     print(row["Kategorie"])
