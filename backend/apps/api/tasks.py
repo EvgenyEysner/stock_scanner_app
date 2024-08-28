@@ -1,14 +1,11 @@
-import csv
 import datetime
-import io
 
 from celery import shared_task
 from django.conf import settings
 from django.core.mail import EmailMessage
-from django.utils import timezone
 
 from apps.api.utils.csv_service import generate_csv, generate_order_list
-from apps.warehouse.models import Order, Item
+from apps.warehouse.models import Order
 
 
 @shared_task
