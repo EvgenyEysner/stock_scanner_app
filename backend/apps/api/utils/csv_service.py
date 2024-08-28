@@ -7,7 +7,7 @@ from apps.warehouse.models import Order
 def generate_csv(order_id: int):
     order = Order.objects.get(id=order_id)
     file = io.StringIO()
-    writer = csv.writer(file, delimiter=",", quoting=csv_service.QUOTE_ALL)
+    writer = csv.writer(file, delimiter=",", quoting=csv.QUOTE_ALL)
     writer.writerow(
         (
             "Bezeichnung",
