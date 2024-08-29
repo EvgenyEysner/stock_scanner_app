@@ -1,56 +1,86 @@
 import csv
-
 from django.core.management.base import BaseCommand
 
 from apps.warehouse.models import Category, Item
 
 
-def get_unit(row):
-    if row == "Stück":
-        unit = 1
+def add_category(file):
+    with open(file, encoding="UTF-8") as f:
+        reader = csv.DictReader(f, delimiter=",")
+        category = set()
+        try:
+            for row in reader:
+                if (
+                    row["Kategorie"] in category
+                    or row["Kategorie"] == "#WERT!"
+                    or row["Kategorie"].isdigit()
+                    or row["Kategorie"] == ""
+                ):
+                    continue
+                category.add(row["Kategorie"].replace(" ", ""))
+            for name in category:
+                Category.objects.create(name=name)
+        except Exception as e:
+            print(row, e)
 
-    if row == "Meter":
-        unit = 2
 
-    if row == "Rolle":
-        unit = 3
-    return unit
+def add_products(file):
+    with open(file, encoding="UTF-8") as f:
+        reader = csv.DictReader(f, delimiter=",")
+
+        for row in reader:
+            category = Category.objects.filter(name=row["Kategorie"]).first()
+
+            if row["EAN"].isdigit() and len(row["EAN"]) == 13:
+                ean = row["EAN"]
+
+            if row["Maßeinheit"] == "Rolle":
+                item = Item.objects.create(
+                    name=row["Material"],
+                    manufacturer_number=row["Hersteller Artikelnummer"],
+                    category_id=category.id,
+                    stock_id=1,
+                    unit=3,
+                    ean=ean,
+                    on_stock=10,
+                    image="default-product-image.jpg",
+                    position_number=row["Pos."],
+                )
+
+            if row["Maßeinheit"] == "Meter":
+                item = Item.objects.create(
+                    name=row["Material"],
+                    manufacturer_number=row["Hersteller Artikelnummer"],
+                    category_id=category.id,
+                    stock_id=1,
+                    unit=2,
+                    ean=ean,
+                    on_stock=10,
+                    image="default-product-image.jpg",
+                    position_number=row["Pos."],
+                )
+
+            if row["Maßeinheit"] == "Stück":
+                item = Item.objects.create(
+                    name=row["Material"],
+                    manufacturer_number=row["Hersteller Artikelnummer"],
+                    category_id=category.id,
+                    stock_id=1,
+                    unit=1,
+                    ean=ean,
+                    on_stock=10,
+                    image="default-product-image.jpg",
+                    position_number=row["Pos."],
+                )
+            print(item)
 
 
 class Command(BaseCommand):
     help = "Add products"
 
-    # def add_arguments(self, parser): ...
+    def add_arguments(self, parser): ...
 
     def handle(self, *args, **options):
         # file = str(input("Dateipfad eingeben: "))
         file = "../backend/bedarfsliste_08_2024.csv"
-
-        with open(file, encoding="UTF-8") as f:
-            reader = csv.DictReader(f, delimiter=",")
-
-            units = ["Stück", "Meter", "Rolle"]
-            for row in reader:
-
-                if row["EAN"].isdigit() and len(row["EAN"]) == 13 and row["EAN"] != "":
-                    ean = row["EAN"]
-
-                if row["Kategorie"] is not None:
-                    name = row["Kategorie"]
-
-                if row["Hersteller Artikelnummer"] != "":
-                    manufacturer_number = row["Hersteller Artikelnummer"]
-
-                    unit = get_unit(row["Maßeinheit"])
-
-                    Item.objects.create(
-                        name=row["Material"],
-                        manufacturer_number=manufacturer_number,
-                        category_id=Category.objects.get(name=name).id,
-                        stock_id=1,
-                        image="default-product-image.png",
-                        unit=unit,
-                        ean=ean,
-                        on_stock=10,
-                        position_number=row["Pos."],
-                    )
+        add_products(file)
