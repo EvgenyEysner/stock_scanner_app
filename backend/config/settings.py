@@ -304,11 +304,11 @@ EMAIL_USE_TLS = True
 RECIPIENT_ADDRESS = env("RECIPIENT_ADDRESS")
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Lagerverwaltung",
-    "site_header": "Lageradmin",
+    "site_title": "Stocky",
+    "site_header": "Zarg Lagerverwaltung",
     "site_brand": "Lagerverwaltung",
-    # "site_logo": "fas fa-solar-panel",
-    "welcome_sign": "Lageverwaltung Software",
+    "site_logo": "image/logo256x256.png",
+    "welcome_sign": "Zarg Lagerverwaltung",
     "hide_apps": ["django_db_logger", "auth", "token_blacklist"],
     # "hide_models": ["account.user"],
     "related_modal_active": True,
