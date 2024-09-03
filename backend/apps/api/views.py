@@ -1,4 +1,5 @@
 from rest_framework import generics, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,6 +15,12 @@ from apps.api.tasks import order_created
 from apps.warehouse.models import Item, Order, OrderItem
 
 
+class Pagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 300
+
+
 class UserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -21,13 +28,15 @@ class UserView(generics.ListAPIView):
 
 
 class ItemsListView(generics.ListAPIView):
+    permission_classes = (IsAuthenticated,)
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    pagination_class = Pagination
 
 
 class ItemDetailView(generics.RetrieveAPIView):
-    permission_classes = (AllowAny,)
     queryset = Item.objects.all()
+    permission_classes = (IsAuthenticated,)
     serializer_class = ItemSerializer
     lookup_field = "ean"
 
