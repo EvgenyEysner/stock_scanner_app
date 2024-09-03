@@ -24,7 +24,7 @@ class Pagination(PageNumberPagination):
 class UserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
 
 class ItemsListView(generics.ListAPIView):
@@ -47,13 +47,13 @@ class ItemDetailView(generics.RetrieveAPIView):
 class OrderListView(generics.ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
 
 class OrderItemListView(generics.ListAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
 
 class CartAPI(APIView):
