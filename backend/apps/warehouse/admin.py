@@ -6,24 +6,15 @@ from .models import Item, Stock, Category, Order, OrderItem
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
-    def image_tag(self, obj):
-        return format_html(
-            f'<img src="{obj.image.url}" style="width: 50px; height: 50px;"/>'
-        )
-
-    def barcode_tag(self, obj):
-        return format_html(
-            f'<img src="{obj.barcode.url}" style="width: 50px; height: 50px;"/>'
-        )
 
     list_display = (
         "image_tag",
         "name",
         "description",
+        "category",
         "on_stock",
         "stock",
         "unit",
-        "position_number",
         "manufacturer_number",
         "ean",
         "barcode_tag",
@@ -32,7 +23,20 @@ class ItemAdmin(admin.ModelAdmin):
     list_filter = (
         "id",
         "name",
+        "category"
     )
+
+    @admin.display(description="Bild")
+    def image_tag(self, obj):
+        return format_html(
+            f'<img src="{obj.image.url}" style="width: 50px; height: 50px;"/>'
+        )
+
+    @admin.display(description="Barcode")
+    def barcode_tag(self, obj):
+        return format_html(
+            f'<img src="{obj.image.url}" style="width: 50px; height: 50px;"/>'
+        )
 
 
 @admin.register(Stock)

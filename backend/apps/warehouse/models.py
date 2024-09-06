@@ -81,9 +81,6 @@ class Item(models.Model):
         verbose_name=_("Lager"),
     )
     ean = models.CharField(verbose_name=_("EAN"), max_length=13)
-    position_number = models.IntegerField(
-        verbose_name=_("Position bei Hauptlager"), default=0
-    )
     barcode = models.ImageField(
         verbose_name=_("Strichcode"),
         # default="item/barcode/barcode.svg",
@@ -126,8 +123,8 @@ class Order(models.Model):
     )
 
     class Meta:
-        verbose_name = "Auftrag"
-        verbose_name_plural = "Aufträge"
+        verbose_name = "Auftrag/ Entnahme"
+        verbose_name_plural = "Aufträge/ Entnahme"
         ordering = ("created_at",)
 
     def __str__(self):
