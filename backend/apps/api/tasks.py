@@ -45,5 +45,5 @@ def check_stock():
         from_email,
         recipients,
     )
-    email.attach(f"bestellliste.csv", file.getvalue(), "text/csv")
+    email.attach(f"bestandsliste.csv", file.getvalue(), "text/csv")
     email.send(fail_silently=False)

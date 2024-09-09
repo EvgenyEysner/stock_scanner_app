@@ -70,9 +70,11 @@ class Item(models.Model):
         default=UnitChoices.PIECES,
         verbose_name=_("Maßeinheit"),
     )
-
     on_stock = models.PositiveSmallIntegerField(
         verbose_name=_("Lagerbestand"), default=0
+    )
+    min_stock = models.PositiveSmallIntegerField(
+        verbose_name=_("Mindestbestand"), default=1
     )
     stock = models.ForeignKey(
         Stock,
@@ -111,7 +113,9 @@ class Order(models.Model):
         Employee, on_delete=models.PROTECT, verbose_name=Employee._meta.verbose_name
     )
 
-    note = models.TextField(max_length=256, verbose_name=_("Notiz"), blank=True, null=True)
+    note = models.TextField(
+        max_length=256, verbose_name=_("Notiz"), blank=True, null=True
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True,

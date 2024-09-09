@@ -43,7 +43,7 @@ def generate_order_list() -> io.StringIO:
         )
     )
     for item in Item.objects.all():
-        if item.on_stock <= 1:
+        if item.on_stock <= item.min_stock:
             writer.writerow(
                 (
                     item.name,
