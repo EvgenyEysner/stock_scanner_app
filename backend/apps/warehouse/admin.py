@@ -13,6 +13,7 @@ class ItemAdmin(admin.ModelAdmin):
         "description",
         "category",
         "on_stock",
+        "min_stock",
         "stock",
         "unit",
         "manufacturer_number",
