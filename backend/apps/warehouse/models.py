@@ -44,6 +44,12 @@ class Item(models.Model):
         METER = 2, _("Meter")
         ROLL = 3, _("Rolle")
 
+    class ColorSelection(models.IntegerChoices):
+        RED = 1, _("Rot")
+        YELLOW = 2, _("Gelb")
+        GREEN = 3, _("Grün")
+        DEFAULT = 4, _("")
+
     name = models.CharField(_("Bezeichnung"), max_length=64)
     description = models.TextField(
         _("Beschreibung"), max_length=256, null=True, blank=True
@@ -69,6 +75,14 @@ class Item(models.Model):
         choices=UnitChoices.choices,
         default=UnitChoices.PIECES,
         verbose_name=_("Maßeinheit"),
+    )
+    favorite = models.PositiveSmallIntegerField(
+        choices=ColorSelection.choices,
+        default=ColorSelection.DEFAULT,
+        verbose_name=_("Favorit"),
+    )
+    department = models.CharField(
+        _("Abteilung"), max_length=64, blank=True, default="AC"
     )
     on_stock = models.PositiveSmallIntegerField(
         verbose_name=_("Lagerbestand"), default=0
