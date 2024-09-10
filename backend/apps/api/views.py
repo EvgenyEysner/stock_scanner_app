@@ -1,5 +1,7 @@
+from django.http import Http404
 from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -34,11 +36,34 @@ class ItemsListView(generics.ListAPIView):
     pagination_class = Pagination
 
 
-class ItemDetailView(generics.RetrieveAPIView):
-    queryset = Item.objects.all()
+class ItemDetailView(APIView):
+    """
+    Retrieve and update instance.
+    """
+
     permission_classes = (IsAuthenticated,)
-    serializer_class = ItemSerializer
+    parser_classes = (MultiPartParser, FormParser)
     lookup_field = "ean"
+
+    def get_object(self, ean):
+        try:
+            return Item.objects.get(ean=ean)
+        except Item.DoesNotExist:
+            raise Http404
+
+    def get(self, request, ean):
+        item = self.get_object(ean)
+        serializer = ItemSerializer(item)
+        return Response(serializer.data)
+
+    def put(self, request, ean):
+        item = self.get_object(ean)
+        data = request.data
+        serializer = ItemSerializer(item, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # ---------------- order/orderItems views ------------ #
