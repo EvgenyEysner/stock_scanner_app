@@ -38,9 +38,10 @@ class ItemAdmin(admin.ModelAdmin):
 
     @admin.display(description="Bild")
     def image_tag(self, obj):
-        return format_html(
-            f'<img src="{obj.image.url}" style="width: 50px; height: 50px;"/>'
-        )
+        if obj.image:
+            return format_html(
+                f'<img src="{obj.image.url}" style="width: 50px; height: 50px;"/>'
+            )
 
     @admin.display(description="Barcode")
     def barcode_tag(self, obj):
