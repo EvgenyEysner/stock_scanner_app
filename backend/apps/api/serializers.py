@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from apps.account import permissions
 from apps.account.models import User
 from apps.warehouse.models import Item, Order, OrderItem
 
@@ -36,7 +37,21 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    perms = serializers.SerializerMethodField(read_only=True)
+
+    def get_perms(self, obj):
+        return hasattr(obj, "employee") and obj.employee.permission_group
+
     class Meta:
         model = User
-        fields = ["id", "email", "is_active", "is_staff", "date_joined", "password"]
-        read_only_field = ["is_active", "is_staff", "date_joined"]
+        fields = [
+            "id",
+            "email",
+            "is_active",
+            "is_staff",
+            "date_joined",
+            "password",
+            "employee",
+            "perms",
+        ]
+        read_only_field = ["is_active", "is_staff", "is_superuser", "date_joined"]

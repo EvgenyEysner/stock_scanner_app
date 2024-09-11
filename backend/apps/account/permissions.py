@@ -30,7 +30,7 @@ def perms(model, actions: List[str]):
 
 def is_staff(employee):
     """Determine if employee has backend access."""
-    return employee.permission_group != employee.PermissionGroup.CARETAKER
+    return employee.permission_group != employee.PermissionGroup.INSTALLER
 
 
 def is_limited_by_stock(employee):

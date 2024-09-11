@@ -8,10 +8,12 @@ from apps.api.views import (
     OrderListView,
     OrderItemListView,
     UserView,
+    UserMeView,
 )
 
 urlpatterns = [
     path("user/", UserView.as_view(), name="user"),
+    path("me/", UserMeView.as_view(), name="me"),
     path("items/", ItemsListView.as_view(), name="items"),
     path("item/<slug:ean>/", ItemDetailView.as_view(), name="item"),
     path("order/", OrderListView.as_view(), name="order"),
