@@ -319,6 +319,7 @@ JAZZMIN_SETTINGS = {
         "warehouse.category": "fas fa-globe-europe",
         "warehouse.item": "fas fa-store",
         "warehouse.order": "fas fa-shipping-fast",
+        "warehouse.returnrequest": "fas fa-exchange-alt",
     },
     "order_with_respect_to": [
         "account.user",

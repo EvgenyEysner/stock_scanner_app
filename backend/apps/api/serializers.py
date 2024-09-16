@@ -1,8 +1,13 @@
 from rest_framework import serializers
 
-from apps.account import permissions
 from apps.account.models import User
-from apps.warehouse.models import Item, Order, OrderItem
+from apps.warehouse.models import (
+    Item,
+    Order,
+    OrderItem,
+    ReturnRequestItem,
+    ReturnRequest,
+)
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -33,9 +38,25 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+# -------------- return request serializers --------------- #
+class ReturnRequestItemSerializer(serializers.ModelSerializer):
+    item = serializers.SlugRelatedField(slug_field="name", read_only=True)
+
+    class Meta:
+        model = ReturnRequestItem
+        fields = "__all__"
+
+
+class ReturnRequestSerializer(serializers.ModelSerializer):
+    items = ReturnRequestItemSerializer(many=True)
+    employee = serializers.SlugRelatedField(slug_field="last_name", read_only=True)
+
+    class Meta:
+        model = ReturnRequest
+        fields = "__all__"
+
+
 # -------------- accounts serializers --------------- #
-
-
 class UserSerializer(serializers.ModelSerializer):
     perms = serializers.SerializerMethodField(read_only=True)
 

@@ -12,9 +12,17 @@ from apps.api.serializers import (
     OrderSerializer,
     OrderItemSerializer,
     UserSerializer,
+    ReturnRequestSerializer,
+    ReturnRequestItemSerializer,
 )
-from apps.api.tasks import order_created
-from apps.warehouse.models import Item, Order, OrderItem
+from apps.api.tasks import order_created, return_request_created
+from apps.warehouse.models import (
+    Item,
+    Order,
+    OrderItem,
+    ReturnRequest,
+    ReturnRequestItem,
+)
 
 
 class Pagination(PageNumberPagination):
@@ -83,8 +91,6 @@ class ItemDetailView(APIView):
 
 
 # ---------------- order/orderItems views ------------ #
-
-
 class OrderListView(generics.ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -121,6 +127,49 @@ class CartAPI(APIView):
 
         # ---------------- Send mail with order data ------------ #
         order_created.delay(order.id)
+
+        if not serializer.data:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+# ---------------- ReturnRequest/ReturnRequestItems views ------------ #
+class ReturnRequestListView(generics.ListAPIView):
+    queryset = ReturnRequest.objects.all()
+    serializer_class = ReturnRequestSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class ReturnRequestItemListView(generics.ListAPIView):
+    queryset = ReturnRequestItem.objects.all()
+    serializer_class = ReturnRequestItemSerializer
+    permission_classes = (IsAuthenticated,)
+
+
+class ReturnRequestAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        return_request_items = request.data
+        return_request = ReturnRequest.objects.create(
+            employee_id=request.user.employee.id, reason=return_request_items["note"]
+        )
+
+        return_request_list = []
+        for item in return_request_items["data"]["cart"]:
+            return_request_list.append(
+                ReturnRequestItem(
+                    item_id=item.get("id"),
+                    return_request=return_request,
+                    quantity=item.get("quantity"),
+                )
+            )
+
+        ReturnRequestItem.objects.bulk_create(return_request_list)
+        serializer = ReturnRequestSerializer(return_request, many=False)
+
+        # ---------------- Send mail with return request data ------------ #
+        return_request_created.delay(return_request.id)
 
         if not serializer.data:
             return Response(status=status.HTTP_400_BAD_REQUEST)

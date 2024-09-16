@@ -1,7 +1,15 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Item, Stock, Category, Order, OrderItem
+from .models import (
+    Item,
+    Stock,
+    Category,
+    Order,
+    OrderItem,
+    ReturnRequestItem,
+    ReturnRequest,
+)
 
 
 @admin.register(Item)
@@ -77,3 +85,18 @@ class OrderAdmin(admin.ModelAdmin):
     @admin.display(description="Erfasste Menge")
     def total(self, obj):
         return obj.get_total()
+
+
+class ReturnRequestItemInline(admin.TabularInline):
+    model = ReturnRequestItem
+    raw_id_fields = ["item"]
+
+
+@admin.register(ReturnRequest)
+class ReturnRequestAdmin(admin.ModelAdmin):
+    list_display = ("employee", "created_at", "updated_at", "reason", "status")
+    inlines = [ReturnRequestItemInline]
+
+    # @admin.display(description="Erfasste Menge")
+    # def total(self, obj):
+    #     return obj.get_total()

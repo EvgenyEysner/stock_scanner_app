@@ -170,3 +170,56 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class ReturnRequest(models.Model):
+    STATUS_CHOICES = (
+        ("pending", "In Bearbeitung"),
+        ("approved", "Bestätigt"),
+        ("rejected", "Zurückgewiesen"),
+    )
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    reason = models.TextField(verbose_name=_("Rückgabegrund"))
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(
+        verbose_name=_("geändert am"), editable=False, auto_now=True
+    )
+
+    class Meta:
+        verbose_name = "Retoure"
+        verbose_name_plural = "Retoure"
+
+    def __str__(self):
+        return f"{self.employee} {self.created_at}"
+
+    def save(self, *args, **kwargs):
+        if self.status == "approved":
+            for return_request_item in self.items.all():
+                item = Item.objects.get(id=return_request_item.item_id)
+                item.on_stock += return_request_item.quantity
+                item.save()
+        return super().save(*args, **kwargs)
+
+
+class ReturnRequestItem(models.Model):
+    return_request = models.ForeignKey(
+        ReturnRequest,
+        verbose_name=_("Retoure"),
+        on_delete=models.CASCADE,
+        related_name="items",
+    )
+    item = models.ForeignKey(
+        Item,
+        verbose_name=_("Artikel"),
+        on_delete=models.CASCADE,
+        related_name="return_request_items",
+    )
+    quantity = models.PositiveSmallIntegerField(verbose_name=_("menge"), default=0)
+
+    class Meta:
+        verbose_name = "Rückgabe Artikel"
+        verbose_name_plural = "Rückgabe Artikeln"
+
+    def __str__(self):
+        return str(self.id)

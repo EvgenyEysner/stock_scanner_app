@@ -9,6 +9,7 @@ from apps.api.views import (
     OrderItemListView,
     UserView,
     UserMeView,
+    ReturnRequestAPI,
 )
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
     path("order/", OrderListView.as_view(), name="order"),
     path("order-items/", OrderItemListView.as_view(), name="order-items"),
     path("cart/", CartAPI.as_view(), name="cart"),
+    path("return-request/cart/", ReturnRequestAPI.as_view(), name="return"),
     path("token/", TokenObtainPairView.as_view()),
     path("token/refresh/", TokenRefreshView.as_view()),
 ]
