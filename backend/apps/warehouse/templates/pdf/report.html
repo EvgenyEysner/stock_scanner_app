@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PDF Druck</title>
+    <style type="text/css">
+        @page {
+            size: landscape;
+            margin: 2cm;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<table class="table-info">
+    <thead>
+    <tr>
+        <th scope="col">Bild</th>
+        <th scope="col">Bezeichnung</th>
+        <th scope="col">Kategorie</th>
+        <th scope="col">Lagerbestand</th>
+        <th scope="col">Maßeinheit</th>
+        <th scope="col">Lager</th>
+        <th scope="col">EAN</th>
+        <th scope="col">Barcode</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+        <tr>
+            {% if item.image %}
+                <td>
+                    <img src="{{ item.image.path }}" width="100%" height="350"/>
+                </td>
+            {% endif %}
+            <td>{{ item.name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.on_stock }}</td>
+            <td>{{ item.get_unit_display }}</td>
+            <td>{{ item.stock }}</td>
+            <td>{{ item.ean }}</td>
+            {% if item.barcode %}
+                <td>
+                    <img src="{{ item.barcode.path }}"/>
+                </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
