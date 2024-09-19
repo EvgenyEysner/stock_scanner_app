@@ -126,7 +126,7 @@ class CartAPI(APIView):
         serializer = OrderSerializer(order, many=False)
 
         # ---------------- Send mail with order data ------------ #
-        order_created.delay(order.id)
+        # order_created.delay(order.id)
 
         if not serializer.data:
             return Response(status=status.HTTP_400_BAD_REQUEST)
