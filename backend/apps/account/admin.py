@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth import admin as auth_admin
 
-from apps.account.forms import UserChangeForm, UserCreateForm
+from apps.account.forms import CustomUserChangeForm, CustomUserCreateForm
 from apps.account.models import Employee, User
 
 
@@ -29,16 +30,16 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    form = UserChangeForm
-    add_form = UserCreateForm
+class UserAdmin(auth_admin.UserAdmin):
+    form = CustomUserChangeForm
+    add_form = CustomUserCreateForm
     list_display = (
         "email",
         "is_active",
         "date_joined",
         "is_staff",
     )
-
+    ordering = ("email",)
     list_filter = ("is_active",)
     search_fields = ("email",)
     readonly_fields = ("last_login",)
