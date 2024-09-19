@@ -6,4 +6,4 @@ from apps.warehouse.models import Item
 class EanView(ListView):
     model = Item
     context_object_name = "items"
-    template_name = "ean.html"
+    template_name = "pdf/ean.html"

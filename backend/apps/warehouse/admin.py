@@ -10,7 +10,7 @@ from .models import (
     ReturnRequestItem,
     ReturnRequest,
 )
-from .services import generate_pdf
+from .services import generate_pdf, generate_ean_pdf
 
 
 @admin.register(Item)
@@ -28,10 +28,15 @@ class ItemAdmin(admin.ModelAdmin):
         "ean",
         "barcode_tag",
         "favorite_color",
+        # "link"
     )
 
-    actions = [generate_pdf]
+    actions = [generate_pdf, generate_ean_pdf]
     list_filter = ("ean", "name", "category", "favorite")
+
+    # @admin.display(description="EAN Drucken")
+    # def link(self, obj):
+    #     return format_html('<a href="{}">Custom Link</a>', '/app/eans')
 
     @admin.display(description="Favoriten", ordering="favorite")
     def favorite_color(self, obj):

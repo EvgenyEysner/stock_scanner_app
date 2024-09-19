@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EAN Druck</title>
+    <style type="text/css">
+        @page {
+            size: a4 portrait;
+            margin: 2cm;
+        }
+
+        .column {
+            float: left;
+            width: 33.33%;
+            text-align: center;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+<div class="row">
+    {% for item in items %}
+        <div class="column">
+            <h5>{{ item.name }}</h5>
+            <img src="{{ item.barcode.path }}" alt="{{ item.name }}">
+        </div>
+    {% endfor %}
+</div>
+</body>
+</html>
