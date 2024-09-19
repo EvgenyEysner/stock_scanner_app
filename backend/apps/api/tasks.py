@@ -38,7 +38,7 @@ def order_created(order_id: int):
 @shared_task
 def check_stock():
     file = generate_stock_list()
-    subject = f"Bestand vom |{datetime.datetime.now()}"
+    subject = f"Bestand vom | {datetime.datetime.now().strftime('%d.%m.%Y | %H:%M:%S')}"
     message = "Anbei ist eine Bestandsübersicht"
     from_email = settings.EMAIL_HOST_USER
     recipients = [settings.RECIPIENT_ADDRESS]
