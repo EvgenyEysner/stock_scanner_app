@@ -1,10 +1,5 @@
-from io import BytesIO
-
 from django.contrib import admin
-from django.http import HttpResponse
-from django.template.loader import get_template
 from django.utils.html import format_html
-from xhtml2pdf import pisa
 
 from .models import (
     Item,
@@ -15,31 +10,7 @@ from .models import (
     ReturnRequestItem,
     ReturnRequest,
 )
-from .services import fetch_pdf_resources
-
-
-@admin.action(description="PDF Druck")
-def generate_pdf(modeladmin, request, queryset):
-
-    template_path = "pdf/report.html"
-    context = {
-        "items": queryset,
-    }
-    # find the template and render it.
-    template = get_template(template_path)
-    html = template.render(context)
-    result = BytesIO()
-    # create a pdf
-    pdf = pisa.pisaDocument(
-        BytesIO(html.encode("UTF-8")),
-        result,
-        encoding="UTF-8",
-        link_callback=fetch_pdf_resources,
-    )
-
-    if not pdf.err:
-        return HttpResponse(result.getvalue(), content_type="application/pdf")
-    return None
+from .services import generate_pdf
 
 
 @admin.register(Item)
@@ -60,7 +31,7 @@ class ItemAdmin(admin.ModelAdmin):
     )
 
     actions = [generate_pdf]
-    list_filter = ("id", "name", "category")
+    list_filter = ("ean", "name", "category", "favorite")
 
     @admin.display(description="Favoriten", ordering="favorite")
     def favorite_color(self, obj):
@@ -84,9 +55,10 @@ class ItemAdmin(admin.ModelAdmin):
 
     @admin.display(description="Barcode")
     def barcode_tag(self, obj):
-        return format_html(
-            f'<img src="{obj.barcode.url}" style="width: 50px; height: 50px;"/>'
-        )
+        if obj.barcode:
+            return format_html(
+                f'<img src="{obj.barcode.url}" style="width: 50px; height: 50px;"/>'
+            )
 
 
 @admin.register(Stock)
