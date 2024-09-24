@@ -28,15 +28,10 @@ class ItemAdmin(admin.ModelAdmin):
         "ean",
         "barcode_tag",
         "favorite_color",
-        # "link"
     )
 
     actions = [generate_pdf, generate_ean_pdf]
     list_filter = ("ean", "name", "category", "favorite")
-
-    # @admin.display(description="EAN Drucken")
-    # def link(self, obj):
-    #     return format_html('<a href="{}">Custom Link</a>', '/app/eans')
 
     @admin.display(description="Favoriten", ordering="favorite")
     def favorite_color(self, obj):
@@ -104,7 +99,3 @@ class ReturnRequestItemInline(admin.TabularInline):
 class ReturnRequestAdmin(admin.ModelAdmin):
     list_display = ("employee", "created_at", "updated_at", "reason", "status")
     inlines = [ReturnRequestItemInline]
-
-    # @admin.display(description="Erfasste Menge")
-    # def total(self, obj):
-    #     return obj.get_total()

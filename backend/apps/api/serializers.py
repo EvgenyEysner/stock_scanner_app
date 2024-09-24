@@ -12,6 +12,7 @@ from apps.warehouse.models import (
 
 class ItemSerializer(serializers.ModelSerializer):
     unit = serializers.CharField(source="get_unit_display")
+    favorite = serializers.CharField(source="get_favorite_display")
     category = serializers.SlugRelatedField(slug_field="name", read_only=True)
     stock = serializers.SlugRelatedField(slug_field="name", read_only=True)
 
