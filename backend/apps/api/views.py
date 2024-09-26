@@ -156,7 +156,7 @@ class ReturnRequestAPI(APIView):
         )
 
         return_request_list = []
-        for item in return_request_items["data"]["cart"]:
+        for item in return_request_items["data"]["returns"]:
             return_request_list.append(
                 ReturnRequestItem(
                     item_id=item.get("id"),
