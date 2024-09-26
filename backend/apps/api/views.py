@@ -1,5 +1,7 @@
+from django.db import transaction
 from django.http import Http404
 from rest_framework import generics, status
+from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
@@ -22,6 +24,8 @@ from apps.warehouse.models import (
     OrderItem,
     ReturnRequest,
     ReturnRequestItem,
+    Category,
+    Stock,
 )
 
 
@@ -83,11 +87,34 @@ class ItemDetailView(APIView):
     def put(self, request, ean):
         item = self.get_object(ean)
         data = request.data
-        serializer = ItemSerializer(item, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # --- transaction.atomic() block ensures that either all or no changes are made to the database. --- #
+        with transaction.atomic():
+            # --- Update category if necessary --- #
+            if item.category.name != data["category"]:
+                category = get_object_or_404(Category, name=data["category"])
+                item.category = category
+
+            # --- Update stock if necessary --- #
+            if item.stock.name != data["stock"]:
+                stock = get_object_or_404(Stock, name=data["stock"])
+                item.stock = stock
+
+            favorite_choice = {color: num for num, color in item.ColorSelection.choices}
+            unit_choice = {name: num for num, name in item.UnitChoices.choices}
+
+            # --- Update favorite if necessary --- #
+            if favorite_choice.get(data["favorite"]) != item.get_favorite_display():
+                item.favorite = favorite_choice.get(data["favorite"])
+
+            if unit_choice.get(data["unit"]) != item.get_unit_display():
+                item.unit = unit_choice.get(data["unit"])
+
+            # --- Save and validate the updated item --- #
+            serializer = ItemSerializer(item, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # ---------------- order/orderItems views ------------ #
