@@ -1,0 +1,26 @@
+{% extends "admin/index.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center mt-4">
+            {% for button in custom_buttons %}
+                <div class="col-md-4 text-center mb-4 ml-5"> <!-- Spalte für jeden Button -->
+                    <a class="btn shadow-sm d-flex flex-column align-items-center justify-content-between"
+                       href="{{ button.url }}" style="border: none; transition: transform 0.2s;">
+                        <img src="{% static button.logo %}" alt="{{ button.name }} Logo"
+                             style="max-height: 200px; margin-bottom: 10px; transition: transform 0.2s;"> <!-- Logo -->
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        .btn:hover {
+            transform: scale(1.05); /* Vergrößerung bei Hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Schatteneffekt bei Hover */
+        }
+    </style>
+
+{% endblock %}

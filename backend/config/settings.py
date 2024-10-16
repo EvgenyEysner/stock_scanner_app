@@ -75,6 +75,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "apps.account.middleware.CustomAdminMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -345,4 +346,60 @@ JAZZMIN_SETTINGS = {
     #         }
     #     ]
     # },
+}
+
+ZARG_JAZZMIN_SETTINGS = {
+    "site_title": "Stocky - Zarg",
+    "site_header": "Zarg Lagerverwaltung",
+    "site_brand": "Zarg Lagerverwaltung",
+    "site_logo": "image/logo256x256.png",
+    "welcome_sign": "Willkommen bei Zarg Lagerverwaltung",
+    "hide_apps": ["django_db_logger", "auth", "token_blacklist"],
+    "related_modal_active": True,
+    "icons": {
+        "account.user": "fas fa-id-card",
+        "account.employee": "fas fa-users",
+        "warehouse.stock": "fas fa-cubes",
+        "warehouse.category": "fas fa-globe-europe",
+        "warehouse.item": "fas fa-store",
+        "warehouse.order": "fas fa-shipping-fast",
+        "warehouse.returnrequest": "fas fa-exchange-alt",
+    },
+    "order_with_respect_to": [
+        "account.user",
+        "account.employee",
+        "warehouse.stock",
+        "warehouse.item",
+        "warehouse.category",
+        "warehouse.order",
+    ],
+    "show_ui_builder": False,
+}
+
+ENERGIEVERSUM_JAZZMIN_SETTINGS = {
+    "site_title": "Stocky - Energieversum",
+    "site_header": "Lager Energieversum",
+    "site_brand": "Energieversum Lager",
+    "site_logo": "image/energieversum.png",
+    "welcome_sign": "Willkommen bei Energieversum Lager",
+    "hide_apps": ["django_db_logger", "auth", "token_blacklist"],
+    "related_modal_active": True,
+    "icons": {
+        "account.user": "fas fa-id-card",
+        "account.employee": "fas fa-users",
+        "warehouse.stock": "fas fa-cubes",
+        "warehouse.category": "fas fa-globe-europe",
+        "warehouse.item": "fas fa-store",
+        "warehouse.order": "fas fa-shipping-fast",
+        "warehouse.returnrequest": "fas fa-exchange-alt",
+    },
+    "order_with_respect_to": [
+        "account.user",
+        "account.employee",
+        "warehouse.stock",
+        "warehouse.item",
+        "warehouse.category",
+        "warehouse.order",
+    ],
+    "show_ui_builder": False,
 }

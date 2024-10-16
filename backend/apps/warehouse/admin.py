@@ -11,6 +11,7 @@ from .models import (
     ReturnRequest,
 )
 from .services import generate_pdf, generate_ean_pdf
+from ..account.admin import second_admin
 
 
 @admin.register(Item)
@@ -99,3 +100,8 @@ class ReturnRequestItemInline(admin.TabularInline):
 class ReturnRequestAdmin(admin.ModelAdmin):
     list_display = ("employee", "created_at", "updated_at", "reason", "status")
     inlines = [ReturnRequestItemInline]
+
+
+second_admin.register(Item, ItemAdmin)
+second_admin.register(Stock, StockAdmin)
+second_admin.register(Category, CategoryAdmin)

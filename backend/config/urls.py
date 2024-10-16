@@ -3,8 +3,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from apps.account.admin import custom_admin_site, second_admin
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("zarg-admin/", admin.site.urls),
+    path("energieversum-admin/", second_admin.urls),
+    path("admin/", custom_admin_site.urls),
     path("api/v1/", include("apps.api.urls")),
     path("app/", include("apps.warehouse.urls")),
 ]
