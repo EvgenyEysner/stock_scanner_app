@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.views.generic import RedirectView
 
-from apps.account.admin import custom_admin_site, second_admin, core_admin
+from apps.account.admin import custom_admin_site, second_admin, core_admin, first_admin
 
 urlpatterns = [
     path(
@@ -11,6 +11,7 @@ urlpatterns = [
     ),  # redirect to admin site
     path("zarg-admin/", core_admin.urls),
     path("energieversum-admin/", second_admin.urls),
+    path("senec-admin/", first_admin.urls),
     path("admin/", custom_admin_site.urls),
     path("api/v1/", include("apps.api.urls")),
     path("app/", include("apps.warehouse.urls")),

@@ -403,3 +403,44 @@ ENERGIEVERSUM_JAZZMIN_SETTINGS = {
     ],
     "show_ui_builder": False,
 }
+
+SENEC_JAZZMIN_SETTINGS = {
+    "site_title": "Stocky - Senec",
+    "site_header": "Lager Senec",
+    "site_brand": "Senec Lager",
+    "site_logo": "image/senec_logo.png",
+    "welcome_sign": "Willkommen bei Senec Lager",
+    "hide_apps": ["django_db_logger", "auth", "token_blacklist"],
+    "related_modal_active": True,
+    "icons": {
+        "account.user": "fas fa-id-card",
+        "account.employee": "fas fa-users",
+        "warehouse.stock": "fas fa-cubes",
+        "warehouse.category": "fas fa-globe-europe",
+        "warehouse.item": "fas fa-store",
+        "warehouse.order": "fas fa-shipping-fast",
+        "warehouse.returnrequest": "fas fa-exchange-alt",
+    },
+    "order_with_respect_to": [
+        "account.user",
+        "account.employee",
+        "warehouse.stock",
+        "warehouse.item",
+        "warehouse.category",
+        "warehouse.order",
+    ],
+    "show_ui_builder": False,
+    "custom_links": {
+        "warehouse": [
+            {
+                "name": "Retoure",
+                "url": "https://academy.senec.com/totara/catalog/index.php",
+                "icon": "fas fa-exchange-alt",
+                # TODO: Refine custom permissions
+                # "permissions": [
+                #     "user.is_staff",
+                # ],
+            }
+        ]
+    },
+}

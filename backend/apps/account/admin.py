@@ -23,6 +23,11 @@ class StartAdminSite(admin.AdminSite):
                     "name": "Universum Admin",
                     "logo": "image/energieversum.png",
                 },
+                {
+                    "url": "/senec-admin/",
+                    "name": "Senec Admin",
+                    "logo": "image/senec_logo.png",
+                },
             ],
         }
         return render(request, "admin/custom_index.html", context)
@@ -33,6 +38,12 @@ class CoreAdmin(admin.AdminSite):
     site_header = "Zarg Lagerverwaltung"
     site_title = "Stocky"
     site_logo = "image/logo256x256.png"
+
+
+class FirstAdmin(admin.AdminSite):
+    site_header = "Lager Senec"
+    site_title = "Stocky"
+    site_logo = "image/senec_logo.png"
 
 
 class SecondAdmin(admin.AdminSite):
@@ -142,6 +153,7 @@ class UserAdmin(auth_admin.UserAdmin):
 # ----- Register models for the new AdminSite ----- #
 custom_admin_site = StartAdminSite(name="start_admin")
 second_admin = SecondAdmin(name="second_admin")
+first_admin = FirstAdmin(name="first_admin")
 core_admin = CoreAdmin(name="core_admin")
 
 core_admin.register(User, UserAdmin)

@@ -11,7 +11,7 @@ from .models import (
     ReturnRequest,
 )
 from .services import generate_pdf, generate_ean_pdf
-from ..account.admin import second_admin, core_admin
+from ..account.admin import second_admin, core_admin, first_admin
 
 
 @admin.register(Item)
@@ -33,9 +33,9 @@ class ItemAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if self.admin_site.name == "core_admin":
-            return qs.filter(stock__name="Zarg")
-        return qs.filter(stock__name="EV")
+        admin_site_filters = {"core_admin": "Zarg", "second_admin": "EV"}
+        stock_name = admin_site_filters.get(self.admin_site.name, "Senec")
+        return qs.filter(stock__name=stock_name)
 
     actions = [generate_pdf, generate_ean_pdf]
     list_filter = ("ean", "name", "category", "favorite")
@@ -76,12 +76,18 @@ class StockAdmin(admin.ModelAdmin):
         "manager",
     )
 
+    # --- Dictionary for assigning admin sites to filters --- #
+    admin_filters = {
+        "core_admin": "Zarg",
+        "second_admin": "EV",
+    }
+
     def get_queryset(self, request):
-        # Hier kannst du die Quell-Daten für Stock filtern
         qs = super().get_queryset(request)
-        if self.admin_site.name == "core_admin":
-            return qs.filter(name="Zarg")
-        return qs.filter(name="EV")
+
+        # --- Filter based on the admin site name --- #
+        filter_name = self.admin_filters.get(self.admin_site.name, "Senec")
+        return qs.filter(name=filter_name)
 
 
 @admin.register(Category)
@@ -114,6 +120,10 @@ class ReturnRequestAdmin(admin.ModelAdmin):
     list_display = ("employee", "created_at", "updated_at", "reason", "status")
     inlines = [ReturnRequestItemInline]
 
+
+first_admin.register(Stock, StockAdmin)
+first_admin.register(Item, ItemAdmin)
+first_admin.register(Category, CategoryAdmin)
 
 second_admin.register(Stock, StockAdmin)
 second_admin.register(Item, ItemAdmin)

@@ -3,9 +3,14 @@ from django.utils.deprecation import MiddlewareMixin
 
 
 class CustomAdminMiddleware(MiddlewareMixin):
+    ADMIN_PATHS = {
+        "/zarg-admin/": settings.ZARG_JAZZMIN_SETTINGS,
+        "/energieversum-admin/": settings.ENERGIEVERSUM_JAZZMIN_SETTINGS,
+        "/senec-admin/": settings.SENEC_JAZZMIN_SETTINGS,
+    }
+
     def process_request(self, request):
-        if request.path.startswith("/zarg-admin/"):
-            settings.JAZZMIN_SETTINGS = settings.ZARG_JAZZMIN_SETTINGS
-        elif request.path.startswith("/energieversum-admin/"):
-            settings.JAZZMIN_SETTINGS = settings.ENERGIEVERSUM_JAZZMIN_SETTINGS
-        settings.JAZZMIN_SETTINGS = settings.JAZZMIN_SETTINGS
+        for admin_path, jazzmin_setting in self.ADMIN_PATHS.items():
+            if request.path.startswith(admin_path):
+                settings.JAZZMIN_SETTINGS = jazzmin_setting
+                break
