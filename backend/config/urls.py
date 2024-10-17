@@ -1,12 +1,15 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
-from apps.account.admin import custom_admin_site, second_admin
+from apps.account.admin import custom_admin_site, second_admin, core_admin
 
 urlpatterns = [
-    path("zarg-admin/", admin.site.urls),
+    path(
+        "", RedirectView.as_view(pattern_name="admin:index")
+    ),  # redirect to admin site
+    path("zarg-admin/", core_admin.urls),
     path("energieversum-admin/", second_admin.urls),
     path("admin/", custom_admin_site.urls),
     path("api/v1/", include("apps.api.urls")),

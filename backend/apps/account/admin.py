@@ -142,3 +142,7 @@ class UserAdmin(auth_admin.UserAdmin):
 # ----- Register models for the new AdminSite ----- #
 custom_admin_site = StartAdminSite(name="start_admin")
 second_admin = SecondAdmin(name="second_admin")
+core_admin = CoreAdmin(name="second_admin")
+
+core_admin.register(User, UserAdmin)
+core_admin.register(Employee, EmployeeAdmin)
