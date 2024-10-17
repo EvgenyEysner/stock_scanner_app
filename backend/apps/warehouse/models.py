@@ -13,8 +13,8 @@ from apps.account.models import User
 class Stock(models.Model):
     name = models.CharField(_("Lagername"), max_length=64)
     location = models.TextField(_("Standort"), max_length=500)
-    manager = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name="stocks"
+    manager = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="stocks", verbose_name="Lagerleitung"
     )
 
     def __str__(self):
@@ -178,7 +178,7 @@ class ReturnRequest(models.Model):
         ("approved", "Bestätigt"),
         ("rejected", "Zurückgewiesen"),
     )
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, verbose_name="Mitarbeiter")
     reason = models.TextField(verbose_name=_("Rückgabegrund"))
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     created_at = models.DateTimeField(auto_now_add=True)
