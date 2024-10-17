@@ -31,6 +31,12 @@ class ItemAdmin(admin.ModelAdmin):
         "favorite_color",
     )
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if self.admin_site.name == "core_admin":
+            return qs.filter(stock__name="Zarg")
+        return qs.filter(stock__name="EV")
+
     actions = [generate_pdf, generate_ean_pdf]
     list_filter = ("ean", "name", "category", "favorite")
 
@@ -69,6 +75,13 @@ class StockAdmin(admin.ModelAdmin):
         "location",
         "manager",
     )
+
+    def get_queryset(self, request):
+        # Hier kannst du die Quell-Daten für Stock filtern
+        qs = super().get_queryset(request)
+        if self.admin_site.name == "core_admin":
+            return qs.filter(name="Zarg")
+        return qs.filter(name="EV")
 
 
 @admin.register(Category)
