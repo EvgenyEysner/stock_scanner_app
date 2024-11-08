@@ -117,6 +117,41 @@ class ItemDetailView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ItemCreateView(APIView):
+
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request):
+        data = request.data
+
+        # --- transaction.atomic() block ensures that either all or no changes are made to the database. --- #
+        with transaction.atomic():
+            # --- Validate and create the category if it exists --- #
+            category = get_object_or_404(Category, name=data.get("category"))
+            stock = get_object_or_404(Stock, name=data.get("stock"))
+
+            item = Item(
+                image=data.get("image"),
+                name=data.get("name"),
+                description=data.get("description"),
+                category=category,
+                stock=stock,
+                on_stock=data.get("on_stock"),
+                ean=data.get("ean"),
+                unit=data.get("unit"),
+                favorite=data.get("favorite"),
+            )
+
+            # --- Save and validate the new item --- #
+            serializer = ItemSerializer(item, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 # ---------------- order/orderItems views ------------ #
 class OrderListView(generics.ListAPIView):
     queryset = Order.objects.all()
